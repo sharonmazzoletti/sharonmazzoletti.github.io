@@ -1,0 +1,68 @@
+{
+  "intro": {
+    "text": "<p>Das Trio Note à Note wurde 2016 gegründet. Der Name kommt ursprünglich aus der Welt der Haute Cuisine: wie im gleichnamigen Zweig der Molekularküche werden auch beim Trio Note à Note die Zutaten ständig variiert und ergänzt, bis letztendlich ein stimmiges Ganzes entsteht. Seit 2023 besteht die Besetzung aus den Flötistinnen Livia Gučanin und Magdalena Zwahlen und Pianistin Sharon Mazzoletti.</p><p>Wir veranstalten zwei Konzertreihen im Jahr, darunter auch immer wieder Reihen in unserem Erfolgs-Format für Kinder und Familien. Dabei arbeiten wir seit 2021 mit der Illustratorin Yasemin Günay zusammen, um ein Märchen in Worten, Bildern und Musik zu erzählen – für kleine und grosse Kinder.</p><p>Wir haben ein grosses und sich stetig erweiterndes Repertoire an Originalwerken und Arrangements, welches das 17. bis 21. Jahrhundert überspannt. Ein besonderes Augenmerk möchten wir dabei auf die Wiederentdeckung und Aufführung von Werken von Komponistinnen legen.</p><p>Nehmen Sie gern mit uns Kontakt auf, um uns für einen Privatanlass oder ein öffentliches Konzert zu buchen.</p>",
+    "button": {
+      "text": "Kontakt",
+      "href": "mailto:trionoteanote@gmail.com"
+    }
+  },
+  "gallery": [
+    "images/trio-note-a-note/trio-2.webp",
+    "images/trio-note-a-note/trio-3.webp",
+    "images/trio-note-a-note/trio-4.webp",
+    "images/trio-note-a-note/trio-5.webp"
+  ],
+  "video": {
+    "heading": "Video Teaser",
+    "description": "<p>Untenstehender Teaser gibt eine Kostprobe zu unserem Trio-Repertoire. Ganze Werke finden sich auf unserem <a href=\"https://www.youtube.com/@trionoteanote1542\" target=\"_blank\" rel=\"noopener noreferrer\">Youtube-Kanal</a>.</p>",
+    "embedUrl": "https://www.youtube.com/embed/XE6ehrpFP1Y?si=t4yBt6xByR99fDlX"
+  },
+  "repertoire": {
+    "sections": [
+      {
+        "heading": "Originale Literatur",
+        "items": [
+          "Barbara Hidber – Um den heissen Brei, im Auftrag des Trio Note à Note",
+          "Herman Beeftink – Dance of the woods",
+          "Ian Clarke – Maya",
+          "Gary Schocker – The further adventures of two Flutes",
+          "Gary Schocker – Two flutes on the loose in Fujian",
+          "Arthur Honegger – Petite Suite",
+          "Philippe Gaubert – Divertissement grec",
+          "Franz Doppler – Andante und Rondo",
+          "Franz Doppler – Fantaisie sur des motifs hongrois",
+          "Franz Doppler – Souvenir de Prague",
+          "Franz und Karl Doppler – Rigoletto-Fantasie",
+          "Caspar Kummer – Concertino op. 101",
+          "Anna Bon di Venezia – Divertimento op. III Nr. 1",
+          "Anna Bon di Venezia – Divertimento op. III Nr. 3",
+          "Johann Sebastian Bach – Triosonate BWV 1039"
+        ]
+      },
+      {
+        "heading": "Arrangements",
+        "items": [
+          "Madeleine Dring – Trio for Flute, Oboe and Piano, arr. Trio Note à Note",
+          "Dmitri Schostakowitsch – Fünf Stücke für zwei Violinen und Klavier, arr. Trio Note à Note",
+          "Bohuslav Martinu – Trio für Flöte, Violine und Klavier, arr. Trio Note à Note",
+          "Jacques Ibert – Deux Interludes, arr. Trio Note à Note",
+          "Claude Debussy – Petite Suite, arr. Pascal Proust",
+          "Ethel Smyth – Variationen über Bonny Sweet Robin für Flöte, Oboe und Klavier, arr. Trio Note à Note",
+          "Mel Bonis – Suite en Trio op. 59, arr. Trio Note à Note",
+          "Léo Delibes – Blumenduett, arr. Trio Note à Note",
+          "Wolfgang Amadeus Mozart – Andante aus KV 364, arr. Renate Greiss-Armin"
+        ]
+      },
+      {
+        "heading": "Duos",
+        "items": [
+          "Anne E. McKennon – Fledgling",
+          "Vítězslava Kaprálová – Geschichten einer kleinen Flöte",
+          "Sergei Prokofjew – Sonate op. 94",
+          "Lili Boulanger – D'un matin de printemps",
+          "Gabriel Fauré – Fantaisie op. 79"
+        ]
+      }
+    ]
+  }
+}

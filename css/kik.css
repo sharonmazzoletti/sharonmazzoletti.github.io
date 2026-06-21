@@ -1,0 +1,86 @@
+body {
+  background: #0c0042;
+}
+
+.kik {
+  padding: calc(var(--header-height) + 4rem) var(--gutter) 5rem;
+}
+
+.kik__inner {
+  display: grid;
+  grid-template-columns: 1fr 32%;
+  gap: 5rem;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  align-items: center;
+}
+
+.kik__text {
+  font-size: clamp(1.05rem, 1.2vw, 1.15rem);
+  line-height: 1.75;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.kik__text p {
+  margin: 0 0 1.1em;
+}
+
+.kik__text p:last-child {
+  margin-bottom: 0;
+}
+
+.kik__text a {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.kik__text a:hover {
+  color: #ffffff;
+}
+
+.kik__logo {
+  display: block;
+  width: 100%;
+}
+
+.kik__logo img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  max-height: 320px;
+  margin: 0 auto;
+}
+
+@media (max-width: 767px) {
+  .kik {
+    padding: 0 0 3rem;
+  }
+
+  .kik__inner {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .kik__logo-col {
+    order: -1;
+    display: flex;
+    justify-content: center;
+    padding: 1.5rem var(--gutter) 0;
+  }
+
+  .kik__logo {
+    width: min(260px, 55vw);
+  }
+
+  .kik__logo img {
+    width: 100%;
+    height: auto;
+    max-height: none;
+    margin: 0;
+  }
+
+  .kik__text-col {
+    padding: 2.5rem var(--gutter) 0;
+  }
+}

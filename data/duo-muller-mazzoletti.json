@@ -1,0 +1,30 @@
+{
+  "intro": {
+    "text": "<p>Alban und Sharon machen seit 2021 miteinander Musik. Angefangen hat unsere Zusammenarbeit über Schumanns Dichterliebe op. 48, die wir zunächst in einem Programm neben den Davidsbündlertänzen op. 6 zur Aufführung brachten, und später noch einmal in Kombination mit weiteren Liedern der deutschen Romantik.</p><p>2024 beschäftigten wir uns mit Liedern in Albans Muttersprache: unter dem Titel Voyage à Paris führten wir drei Liedzyklen von Nadia Boulanger, Arthur Honegger und Francis Poulenc auf, kombiniert mit Sololiteratur für Klavier von Lili Boulanger und Maurice Ravel.</p><p>Nehmen Sie gern mit uns Kontakt auf, um uns für einen Privatanlass oder ein öffentliches Konzert zu buchen.</p>",
+    "button": {
+      "text": "Kontakt",
+      "href": "mailto:musik@sharonmazzoletti.ch?subject=Duo%20M%C3%BCller-Mazzoletti"
+    }
+  },
+  "gallery": [
+    "images/duo-muller-mazzoletti/duo-mm-2.webp",
+    "images/duo-muller-mazzoletti/duo-mm-3.webp",
+    "images/duo-muller-mazzoletti/duo-mm-4.webp",
+    "images/duo-muller-mazzoletti/duo-mm-5.webp",
+    "images/duo-muller-mazzoletti/duo-mm-6.webp"
+  ],
+  "video": {
+    "heading": "Video",
+    "description": "<p>Untenstehendes Video gibt eine Kostprobe aus unserem Duo-Repertoire. Solo-Videos sind unter <a href=\"stubs/video.html\">Video</a> zu finden, weitere Aufnahmen unter <a href=\"trio-note-a-note.html\">Trio Note à Note</a> und <a href=\"stubs/ensembles.html\">Duo DieDa</a>.</p>",
+    "embedUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ"
+  },
+  "repertoire": {
+    "items": [
+      "Nadia Boulanger – Les Heures Claires",
+      "Arthur Honegger – Six Poèmes d'Apollinaire",
+      "Francis Poulenc – Banalités",
+      "Franz Schubert – Schwanengesang",
+      "Robert Schumann – Dichterliebe op. 48"
+    ]
+  }
+}

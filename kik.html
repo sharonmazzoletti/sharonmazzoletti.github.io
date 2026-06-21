@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="de-CH">
+<head>
+  <meta charset="utf-8">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KiK – Sharon Mazzoletti</title>
+  <meta name="description" content="Krienser Industrie Konzerte – ein Konzertlokal von Sharon Mazzoletti und Florian Meier.">
+  <link rel="canonical" href="https://www.sharonmazzoletti.ch/kik.html">
+
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/header.css">
+  <link rel="stylesheet" href="css/kik.css">
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header class="site-header" id="site-header">
+  <div class="site-header__blur"></div>
+  <div class="site-header__inner">
+
+    <a href="index.html" class="site-header__logo">Sharon Mazzoletti</a>
+
+    <!-- Desktop nav -->
+    <nav class="site-nav" aria-label="Hauptnavigation">
+
+      <div class="site-nav__item">
+        <a href="index.html" class="site-nav__link">Home</a>
+      </div>
+
+      <div class="site-nav__item">
+        <a href="vita.html" class="site-nav__link">Vita</a>
+      </div>
+
+      <div class="site-nav__item">
+        <button class="site-nav__folder-btn" aria-expanded="false" aria-controls="nav-ensembles">
+          Ensembles
+          <svg width="10" height="6" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M1 1l4 4 4-4"/></svg>
+        </button>
+        <div class="site-nav__dropdown" id="nav-ensembles">
+          <a href="trio-note-a-note.html" class="site-nav__dropdown-link">Trio Note à Note</a>
+          <a href="duo-muller-mazzoletti.html" class="site-nav__dropdown-link">Duo Müller-Mazzoletti</a>
+          <a href="duo-dieda.html" class="site-nav__dropdown-link">Duo DieDa</a>
+        </div>
+      </div>
+
+      <div class="site-nav__item">
+        <button class="site-nav__folder-btn" aria-expanded="false" aria-controls="nav-archiv" data-href="konzertarchiv.html">
+          Konzertarchiv
+          <svg width="10" height="6" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M1 1l4 4 4-4"/></svg>
+        </button>
+        <div class="site-nav__dropdown" id="nav-archiv">
+          <a href="konzertarchiv.html#2026" class="site-nav__dropdown-link">2026</a>
+          <a href="konzertarchiv.html#2025" class="site-nav__dropdown-link">2025</a>
+          <a href="konzertarchiv.html#2024" class="site-nav__dropdown-link">2024</a>
+          <a href="konzertarchiv.html#2023" class="site-nav__dropdown-link">2023</a>
+          <a href="konzertarchiv.html#2022" class="site-nav__dropdown-link">2022</a>
+          <a href="konzertarchiv.html#2021" class="site-nav__dropdown-link">2021</a>
+        </div>
+      </div>
+
+      <div class="site-nav__item">
+        <a href="kik.html" class="site-nav__link" aria-current="page">KiK</a>
+      </div>
+
+      <div class="site-nav__item">
+        <a href="video.html" class="site-nav__link">Video</a>
+      </div>
+
+      <div class="site-nav__item">
+        <a href="kontakt.html" class="site-nav__link">Kontakt</a>
+      </div>
+
+    </nav>
+
+    <!-- Hamburger -->
+    <button class="site-header__hamburger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobile-nav">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+  </div>
+</header>
+
+<!-- Mobile nav overlay -->
+<nav class="mobile-nav" id="mobile-nav" aria-label="Mobile Navigation">
+  <div class="mobile-nav__item">
+    <a href="index.html" class="mobile-nav__link">Home</a>
+  </div>
+  <div class="mobile-nav__item">
+    <a href="vita.html" class="mobile-nav__link">Vita</a>
+  </div>
+  <div class="mobile-nav__item">
+    <button class="mobile-nav__folder-btn" aria-expanded="false">Ensembles</button>
+    <div class="mobile-nav__sub">
+      <a href="trio-note-a-note.html" class="mobile-nav__sub-link">Trio Note à Note</a>
+      <a href="duo-muller-mazzoletti.html" class="mobile-nav__sub-link">Duo Müller-Mazzoletti</a>
+      <a href="duo-dieda.html" class="mobile-nav__sub-link">Duo DieDa</a>
+    </div>
+  </div>
+  <div class="mobile-nav__item">
+    <button class="mobile-nav__folder-btn" aria-expanded="false">Konzertarchiv</button>
+    <div class="mobile-nav__sub">
+      <a href="konzertarchiv.html#2026" class="mobile-nav__sub-link">2026</a>
+      <a href="konzertarchiv.html#2025" class="mobile-nav__sub-link">2025</a>
+      <a href="konzertarchiv.html#2024" class="mobile-nav__sub-link">2024</a>
+      <a href="konzertarchiv.html#2023" class="mobile-nav__sub-link">2023</a>
+      <a href="konzertarchiv.html#2022" class="mobile-nav__sub-link">2022</a>
+      <a href="konzertarchiv.html#2021" class="mobile-nav__sub-link">2021</a>
+    </div>
+  </div>
+  <div class="mobile-nav__item">
+    <a href="kik.html" class="mobile-nav__link">KiK</a>
+  </div>
+  <div class="mobile-nav__item">
+    <a href="video.html" class="mobile-nav__link">Video</a>
+  </div>
+  <div class="mobile-nav__item">
+    <a href="kontakt.html" class="mobile-nav__link">Kontakt</a>
+  </div>
+</nav>
+
+<main>
+  <section class="kik" aria-label="Krienser Industrie Konzerte">
+    <div class="kik__inner">
+
+      <div class="kik__text-col">
+        <div class="kik__text" id="kikText"></div>
+      </div>
+
+      <div class="kik__logo-col">
+        <a class="kik__logo" id="kikLogoLink" href="https://kikonzerte.ch" target="_blank" rel="noopener noreferrer">
+          <img id="kikLogoImg" src="images/kik-logo.webp" alt="Krienser Industrie Konzerte" width="600" height="600">
+        </a>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<script src="js/nav.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', async () => {
+    try {
+      const res = await fetch('/data/kik.json');
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const data = await res.json();
+      document.getElementById('kikText').innerHTML = data.text || '';
+      const img = document.getElementById('kikLogoImg');
+      if (data.logoSrc) img.src = data.logoSrc;
+      const link = document.getElementById('kikLogoLink');
+      if (data.logoHref) link.href = data.logoHref;
+    } catch (err) {
+      console.error('Fehler beim Laden der KiK-Daten:', err);
+    }
+  });
+</script>
+</body>
+</html>

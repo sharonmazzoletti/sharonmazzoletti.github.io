@@ -1,0 +1,258 @@
+/* ===== Demnächst Section ===== */
+
+.demnachst {
+  background-color: var(--color-accent);
+  padding: 4vmax 0 3vmax;
+}
+
+.demnachst__header {
+  text-align: center;
+  padding: 0 var(--gutter) 2.5rem;
+}
+
+.demnachst__title {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  font-weight: 400;
+  color: #0c0042;
+  margin: 0;
+}
+
+/* ===== Carousel Track ===== */
+
+.carousel__track-wrapper {
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  /* ensures first card snaps flush after its margin */
+  scroll-padding-left: var(--gutter);
+  padding-bottom: 4px; /* prevent card shadow clipping */
+}
+
+.carousel__track-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel__track {
+  display: flex;
+  /* no gap — spacing comes from card margins so centering works correctly */
+  justify-content: flex-start;
+  padding-bottom: 0.5rem;
+}
+
+/* When all cards fit on screen, center the group */
+.carousel__track.cards-fit {
+  justify-content: center;
+}
+
+/* ===== Event Card ===== */
+
+.carousel__slide {
+  background: #0c0042;
+  border-radius: 6px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  /* ~2.33 cards visible: (100vw − 3 gutters) / 2.33 */
+  width: calc((100vw - var(--gutter) * 3) / 2.33);
+  max-width: 550px;
+  min-width: 300px;
+  /* margin-based spacing so justify-content:center centres the whole group */
+  margin-left: var(--gutter);
+  scroll-snap-align: start;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.25);
+}
+
+/* right gutter after last card so scrolling ends cleanly */
+.carousel__slide:last-child {
+  margin-right: var(--gutter);
+}
+
+/* Image */
+.carousel__slide__image-wrap {
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.carousel__slide__image-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+/* Content */
+.carousel__slide__content {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex-grow: 1;
+}
+
+.carousel__slide__title {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  font-weight: 400;
+  color: #ffffff;
+  margin: 0 0 4px;
+  line-height: 1.15;
+  flex-shrink: 0;
+}
+
+.carousel__slide__desc {
+  font-size: clamp(1.05rem, 1.2vw, 1.15rem);
+  color: rgba(255, 255, 255, 0.82);
+  line-height: 1.55;
+  flex-grow: 1;
+}
+
+.carousel__slide__desc p {
+  margin: 0 0 0.35em;
+}
+
+.carousel__slide__desc p:last-child {
+  margin: 0;
+}
+
+.carousel__slide__dates {
+  margin-bottom: 0.85em;
+}
+
+.carousel__slide__dates p {
+  font-style: italic;
+}
+
+.date-ics {
+  font-style: normal;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.date-ics:hover {
+  opacity: 0.75;
+}
+
+.carousel__slide__footer {
+  margin-top: auto;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  flex-shrink: 0;
+}
+
+.carousel__slide__btn {
+  display: inline-block;
+  padding: 0.45em 1.2em;
+  border: 1.5px solid #ffffff;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  font-family: var(--font-body);
+  background: #ffffff;
+  color: #000000;
+  transition: background var(--transition), color var(--transition), border-color var(--transition);
+}
+
+.carousel__slide__btn:hover {
+  background: rgba(255, 255, 255, 0.85);
+  border-color: rgba(255, 255, 255, 0.85);
+}
+
+/* ===== Navigation — centered below cards ===== */
+
+.carousel__nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+  padding: 0 var(--gutter);
+}
+
+.carousel__nav-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(0, 0, 0, 0.35);
+  background: transparent;
+  color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition), border-color var(--transition);
+  flex-shrink: 0;
+}
+
+.carousel__nav-btn:hover {
+  background: rgba(0, 0, 0, 0.08);
+  border-color: rgba(0, 0, 0, 0.6);
+  color: rgba(0, 0, 0, 0.9);
+}
+
+.carousel__nav-btn:disabled {
+  opacity: 0.25;
+  cursor: default;
+}
+
+.carousel__nav-btn:disabled:hover {
+  background: transparent;
+  border-color: rgba(0, 0, 0, 0.35);
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.carousel__nav-btn svg {
+  width: 20px;
+  height: 12px;
+  stroke: currentColor;
+  fill: none;
+  stroke-linecap: square;
+}
+
+/* ===== Mobile ===== */
+
+@media (max-width: 767px) {
+  /* Reset desktop scroll-padding; center snap needs no offset */
+  .carousel__track-wrapper {
+    scroll-padding-left: 0;
+    scroll-padding-inline: 0;
+  }
+
+  .carousel__track {
+    gap: var(--gutter);
+    padding-left: var(--gutter);
+    padding-right: 0;
+  }
+
+  /* KiK puts overflow-x:auto and display:flex on the same element so padding-right
+     on the scroll container is spec-guaranteed scrollable space. Here the scroll
+     container (wrapper) and flex container (track) are separate, so margin-right /
+     padding-right on inner flex children are unreliable in Firefox.
+     A ::after flex item definitively extends the flex container's content width
+     and is always counted in the parent scroll container's scroll extent. */
+  .carousel__track::after {
+    content: '';
+    display: block;
+    flex-shrink: 0;
+    width: var(--gutter);
+  }
+
+  .carousel__slide {
+    /* 100vw − gutter → gutter/2 visible on each side when centered */
+    width: calc(100vw - var(--gutter));
+    max-width: none;
+    min-width: auto;
+    margin-left: 0;
+    margin-right: 0;
+    scroll-snap-align: center;
+  }
+}

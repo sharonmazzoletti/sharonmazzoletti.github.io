@@ -1,0 +1,37 @@
+{
+  "intro": {
+    "text": "<p>Das Duo DieDa bildete sich 2020, über unserer gemeinsamen Begeisterung für die Klavierduos von Dmitri Schostakowitsch. Pandemiebedingt debütierten wir Anfang 2021 über einen Livestream mit Paul Hindemiths Walzern «Drei Wunderschöne Mädchen im Schwarzwald». Erst im November 2021 kam schliesslich die Schostakowitsch-Suite op. 6, die uns zusammenbrachte, zur Live-Aufführung. Seither erweitern wir stetig unser Repertoire an Werken für ein oder zwei Klaviere à vier Hände. Unser letztes Programm widmete sich Kompositionen von Germaine Tailleferre, Amy Beach und Madeleine Dring. Als nächstes nehmen wir uns den amerikanischen Minimal-Stil vor – pianistisch, aber auch kompositorisch: Florian Meier ist dabei, ein Werk eigens für unser Duo zu komponieren. Nehmen Sie gern mit uns Kontakt auf, um uns für einen Privatanlass oder ein öffentliches Konzert zu buchen.</p>",
+    "button": {
+      "text": "Kontakt",
+      "href": "mailto:musik@sharonmazzoletti.ch?subject=Duo%20DieDa"
+    }
+  },
+  "gallery": [
+    "images/duo-dieda/dieda-6.webp",
+    "images/duo-dieda/dieda-2.webp",
+    "images/duo-dieda/dieda-1.webp",
+    "images/duo-dieda/dieda-3.webp",
+    "images/duo-dieda/dieda-4.webp",
+    "images/duo-dieda/dieda-5.webp"
+  ],
+  "video": {
+    "heading": "Video",
+    "description": "<p>Video folgt.</p>",
+    "embedUrl": ""
+  },
+  "repertoire": {
+    "items": [
+      "Madeleine Dring – Dance Suite",
+      "Dmitri Schostakowitsch – Suite für zwei Klaviere op. 6",
+      "Dmitri Schostakowitsch – Concertino für zwei Klaviere op. 94",
+      "Francis Poulenc – Sonate für vier Hände",
+      "Paul Hindemith – Drei wunderschöne Mädchen im Schwarzwald",
+      "Germaine Tailleferre – Jeux de plein air",
+      "Alfredo Casella – Pupazzetti",
+      "Manuel de Falla – Spanische Tänze aus La vida breve, arr. Gustave Samazeuilh",
+      "Amy Beach – Suite for Two Pianos Founded upon Old Irish Melodies op. 104",
+      "Gabriel Fauré – Dolly Suite op. 56",
+      "Antonín Dvořák – Auswahl aus den slavischen Tänzen op. 46 und 72"
+    ]
+  }
+}

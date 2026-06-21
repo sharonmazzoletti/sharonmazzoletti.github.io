@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s -L \"https://github.com/weiweihuanghuang/Work-Sans/raw/master/fonts/statics/woff2/WorkSans-Regular.woff2\" -o fonts/work-sans-regular.woff2)",
+      "Bash(curl -s \"https://api.github.com/repos/CatharsisFonts/Cormorant/contents/fonts/webfonts\")",
+      "Bash(python3 -c \"import json,sys; data=json.load\\(sys.stdin\\); [print\\(f['name'], f.get\\('download_url',''\\)\\) for f in data if 'Garamond' in f['name']]\")",
+      "Bash(curl -s -L \"https://raw.githubusercontent.com/CatharsisFonts/Cormorant/master/fonts/webfonts/CormorantGaramond-Regular.woff2\" -o fonts/cormorant-garamond-regular.woff2)",
+      "Bash(curl -s -L \"https://raw.githubusercontent.com/CatharsisFonts/Cormorant/master/fonts/webfonts/CormorantGaramond-Bold.woff2\" -o fonts/cormorant-garamond-bold.woff2)",
+      "Bash(curl -s -L \"https://raw.githubusercontent.com/CatharsisFonts/Cormorant/master/fonts/webfonts/CormorantGaramond-Italic.woff2\" -o fonts/cormorant-garamond-italic.woff2)",
+      "Bash(curl -s \"https://api.github.com/repos/weiweihuanghuang/Work-Sans/contents/fonts/statics/woff2\")",
+      "Bash(python3 -c \"import json,sys; data=json.load\\(sys.stdin\\); [print\\(f['name'], f.get\\('download_url',''\\)\\) for f in data if 'Regular' in f['name']]\")",
+      "Bash(curl -s \"https://api.github.com/repos/weiweihuanghuang/Work-Sans/contents/fonts\")",
+      "Bash(python3 -c \"import json,sys; data=json.load\\(sys.stdin\\); print\\(json.dumps\\([f['name'] for f in data], indent=2\\)\\)\")",
+      "Bash(curl -s \"https://api.github.com/repos/weiweihuanghuang/Work-Sans/contents/fonts/webfonts\")",
+      "Bash(python3 -c \"import json,sys; data=json.load\\(sys.stdin\\); [print\\(f['name'], f.get\\('download_url',''\\)\\) for f in data if 'Regular' in f['name'] or 'Medium' in f['name']]\")",
+      "Bash(curl -s -L \"https://raw.githubusercontent.com/weiweihuanghuang/Work-Sans/master/fonts/webfonts/WorkSans-Regular.woff2\" -o fonts/work-sans-regular.woff2)",
+      "Bash(chmod +x admin.sh)",
+      "Bash(tree -L 3 -I 'node_modules' /home/florian-meier/Documents/code/kikonzerte 2>/dev/null || find /home/florian-meier/Documents/code/kikonzerte -not -path '*/node_modules/*' -type f | head -40)",
+      "Read(//home/florian-meier/Documents/code/kikonzerte/**)",
+      "Bash(python3)",
+      "WebFetch(domain:sharonmazzoletti.ch)"
+    ]
+  }
+}

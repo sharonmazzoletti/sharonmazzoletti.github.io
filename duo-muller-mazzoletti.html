@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="de-CH">
+<head>
+  <meta charset="utf-8">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Duo Müller-Mazzoletti – Sharon Mazzoletti</title>
+  <meta name="description" content="Duo Müller-Mazzoletti – Gesang und Klavier. Lieder und Konzerte.">
+  <link rel="canonical" href="https://www.sharonmazzoletti.ch/duo-muller-mazzoletti.html">
+
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/header.css">
+  <link rel="stylesheet" href="css/repertoire.css">
+  <link rel="stylesheet" href="css/ensemble.css">
+
+  <!-- Burgundy palette override -->
+  <style>
+    :root {
+      --ens-bg-a: #620133;
+      --ens-bg-b: #0c0042;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header class="site-header" id="site-header">
+  <div class="site-header__blur"></div>
+  <div class="site-header__inner">
+
+    <a href="index.html" class="site-header__logo">Sharon Mazzoletti</a>
+
+    <!-- Desktop nav -->
+    <nav class="site-nav" aria-label="Hauptnavigation">
+
+      <div class="site-nav__item">
+        <a href="index.html" class="site-nav__link">Home</a>
+      </div>
+
+      <div class="site-nav__item">
+        <a href="vita.html" class="site-nav__link">Vita</a>
+      </div>
+
+      <div class="site-nav__item">
+        <button class="site-nav__folder-btn" aria-expanded="false" aria-controls="nav-ensembles">
+          Ensembles
+          <svg width="10" height="6" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M1 1l4 4 4-4"/></svg>
+        </button>
+        <div class="site-nav__dropdown" id="nav-ensembles">
+          <a href="trio-note-a-note.html" class="site-nav__dropdown-link">Trio Note à Note</a>
+          <a href="duo-muller-mazzoletti.html" class="site-nav__dropdown-link" aria-current="page">Duo Müller-Mazzoletti</a>
+          <a href="duo-dieda.html" class="site-nav__dropdown-link">Duo DieDa</a>
+        </div>
+      </div>
+
+      <div class="site-nav__item">
+        <button class="site-nav__folder-btn" aria-expanded="false" aria-controls="nav-archiv" data-href="konzertarchiv.html">
+          Konzertarchiv
+          <svg width="10" height="6" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M1 1l4 4 4-4"/></svg>
+        </button>
+        <div class="site-nav__dropdown" id="nav-archiv">
+          <a href="konzertarchiv.html#2026" class="site-nav__dropdown-link">2026</a>
+          <a href="konzertarchiv.html#2025" class="site-nav__dropdown-link">2025</a>
+          <a href="konzertarchiv.html#2024" class="site-nav__dropdown-link">2024</a>
+          <a href="konzertarchiv.html#2023" class="site-nav__dropdown-link">2023</a>
+          <a href="konzertarchiv.html#2022" class="site-nav__dropdown-link">2022</a>
+          <a href="konzertarchiv.html#2021" class="site-nav__dropdown-link">2021</a>
+        </div>
+      </div>
+
+      <div class="site-nav__item">
+        <a href="kik.html" class="site-nav__link">KiK</a>
+      </div>
+
+      <div class="site-nav__item">
+        <a href="video.html" class="site-nav__link">Video</a>
+      </div>
+
+      <div class="site-nav__item">
+        <a href="kontakt.html" class="site-nav__link">Kontakt</a>
+      </div>
+
+    </nav>
+
+    <!-- Hamburger -->
+    <button class="site-header__hamburger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobile-nav">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+  </div>
+</header>
+
+<!-- Mobile nav overlay -->
+<nav class="mobile-nav" id="mobile-nav" aria-label="Mobile Navigation">
+  <div class="mobile-nav__item">
+    <a href="index.html" class="mobile-nav__link">Home</a>
+  </div>
+  <div class="mobile-nav__item">
+    <a href="vita.html" class="mobile-nav__link">Vita</a>
+  </div>
+  <div class="mobile-nav__item">
+    <button class="mobile-nav__folder-btn" aria-expanded="false">Ensembles</button>
+    <div class="mobile-nav__sub">
+      <a href="trio-note-a-note.html" class="mobile-nav__sub-link">Trio Note à Note</a>
+      <a href="duo-muller-mazzoletti.html" class="mobile-nav__sub-link">Duo Müller-Mazzoletti</a>
+      <a href="duo-dieda.html" class="mobile-nav__sub-link">Duo DieDa</a>
+    </div>
+  </div>
+  <div class="mobile-nav__item">
+    <button class="mobile-nav__folder-btn" aria-expanded="false">Konzertarchiv</button>
+    <div class="mobile-nav__sub">
+      <a href="konzertarchiv.html#2026" class="mobile-nav__sub-link">2026</a>
+      <a href="konzertarchiv.html#2025" class="mobile-nav__sub-link">2025</a>
+      <a href="konzertarchiv.html#2024" class="mobile-nav__sub-link">2024</a>
+      <a href="konzertarchiv.html#2023" class="mobile-nav__sub-link">2023</a>
+      <a href="konzertarchiv.html#2022" class="mobile-nav__sub-link">2022</a>
+      <a href="konzertarchiv.html#2021" class="mobile-nav__sub-link">2021</a>
+    </div>
+  </div>
+  <div class="mobile-nav__item">
+    <a href="kik.html" class="mobile-nav__link">KiK</a>
+  </div>
+  <div class="mobile-nav__item">
+    <a href="video.html" class="mobile-nav__link">Video</a>
+  </div>
+  <div class="mobile-nav__item">
+    <a href="kontakt.html" class="mobile-nav__link">Kontakt</a>
+  </div>
+</nav>
+
+<!-- ===== SECTION 1: INTRO ===== -->
+<section class="ens-intro">
+  <div class="ens-intro__inner">
+    <h1 class="ens-intro__heading">Duo Müller-Mazzoletti</h1>
+    <img src="images/duo-muller-mazzoletti/duo-mm-1.webp"
+         alt="Duo Müller-Mazzoletti"
+         class="ens-intro__img"
+         width="900" height="600">
+    <div class="ens-intro__body" id="ensIntroBody"></div>
+    <a id="ensIntroBtn" href="kontakt.html" class="ens-btn">Kontakt</a>
+  </div>
+</section>
+
+<!-- ===== SECTION 2: GALLERY ===== -->
+<section class="ens-gallery">
+  <div class="ens-gallery__inner">
+
+    <div class="ens-gallery__stage">
+      <img id="ensGalleryMain" class="ens-gallery__main-img" src="" alt="" loading="lazy">
+    </div>
+
+    <div class="ens-gallery__thumbs" id="ensGalleryThumbs"></div>
+
+    <div class="ens-gallery__nav">
+      <button class="ens-gallery__arrow" id="ensGalleryPrev" aria-label="Vorheriges Bild">
+        <svg viewBox="0 0 18 12"><polyline points="9,1 1,6 9,11"/><line x1="1" y1="6" x2="17" y2="6"/></svg>
+      </button>
+      <div class="ens-gallery__counter" id="ensGalleryCounter"></div>
+      <button class="ens-gallery__arrow" id="ensGalleryNext" aria-label="Nächstes Bild">
+        <svg viewBox="0 0 18 12"><polyline points="9,1 17,6 9,11"/><line x1="17" y1="6" x2="1" y2="6"/></svg>
+      </button>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== SECTION 3: VIDEO ===== -->
+<section class="ens-video">
+  <div class="ens-video__inner">
+    <h2 class="ens-video__heading" id="ensVideoHeading"></h2>
+    <div class="ens-video__desc" id="ensVideoDesc"></div>
+    <div class="ens-video__embed-wrap">
+      <iframe id="ensVideoEmbed"
+              class="ens-video__embed"
+              src=""
+              title="Video Duo Müller-Mazzoletti"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION 4: REPERTOIRE ===== -->
+<section class="repertoire">
+  <div class="repertoire__inner">
+
+    <h2 class="repertoire__heading">Repertoire</h2>
+
+    <ul class="repertoire__list" id="ensRepertoireList"></ul>
+
+  </div>
+</section>
+
+<script src="js/nav.js"></script>
+<script src="js/gallery-ensemble.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', async () => {
+    try {
+      const res = await fetch('/data/duo-muller-mazzoletti.json');
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const data = await res.json();
+
+      // Intro
+      const bodyEl = document.getElementById('ensIntroBody');
+      if (bodyEl) bodyEl.innerHTML = data.intro.text;
+      const btnEl = document.getElementById('ensIntroBtn');
+      if (btnEl) { btnEl.textContent = data.intro.button.text; btnEl.href = data.intro.button.href; }
+
+      // Gallery
+      if (data.gallery && data.gallery.length > 0) initEnsembleGallery(data.gallery);
+
+      // Video
+      const headingEl = document.getElementById('ensVideoHeading');
+      if (headingEl) headingEl.textContent = data.video.heading;
+      const descEl = document.getElementById('ensVideoDesc');
+      if (descEl) descEl.innerHTML = data.video.description;
+      const embedEl = document.getElementById('ensVideoEmbed');
+      if (embedEl && data.video.embedUrl) embedEl.src = data.video.embedUrl;
+
+      // Repertoire — flat list, no categories
+      const listEl = document.getElementById('ensRepertoireList');
+      if (listEl && data.repertoire && data.repertoire.items) {
+        const frag = document.createDocumentFragment();
+        data.repertoire.items.forEach(item => {
+          const li = document.createElement('li');
+          li.className = 'repertoire__item';
+          li.textContent = item;
+          frag.appendChild(li);
+        });
+        listEl.appendChild(frag);
+      }
+    } catch (err) {
+      console.error('Fehler beim Laden der Inhalte:', err);
+    }
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,13 @@
+{
+  "name": "sharon-mazzoletti-admin",
+  "version": "1.0.0",
+  "description": "Local CMS server for sharonmazzoletti.ch",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.0",
+    "sharp": "^0.33.0"
+  }
+}

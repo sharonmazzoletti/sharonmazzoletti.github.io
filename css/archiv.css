@@ -1,0 +1,126 @@
+.archiv-page {
+  background: #0c0042;
+  min-height: 100vh;
+  padding: 4rem var(--gutter) 6rem;
+}
+
+.archiv-page__inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.archiv-page__heading {
+  font-family: var(--font-heading);
+  font-size: clamp(2.2rem, 4vw, 3.5rem);
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  color: #ffffff;
+  text-align: center;
+  margin: 0 0 4rem;
+}
+
+/* ===== Concert entries ===== */
+
+.archiv__entry {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+  margin-bottom: 6rem;
+}
+
+.archiv__entry--alt .archiv__entry-text { order: 2; }
+.archiv__entry--alt .archiv__entry-img  { order: 1; }
+
+.archiv__entry--no-img {
+  grid-template-columns: 1fr;
+  max-width: 680px;
+}
+
+.archiv__entry-title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.4rem, 2.2vw, 2rem);
+  font-weight: 400;
+  color: #ffffff;
+  margin: 0 0 1rem;
+  letter-spacing: 0.02em;
+}
+
+.archiv__entry-desc {
+  color: rgba(255, 255, 255, 0.78);
+  font-size: clamp(1.05rem, 1.2vw, 1.15rem);
+  line-height: 1.8;
+  margin: 0;
+}
+
+.archiv__entry-img img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 36vh;
+  object-fit: contain;
+}
+
+/* ===== Year navigation ===== */
+
+.archiv__year-nav {
+  display: flex;
+  gap: 0.6rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding-top: 3rem;
+  margin-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.archiv__year-btn {
+  padding: 0.45em 1.5em;
+  border-radius: 999px;
+  border: 1.5px solid rgba(255, 255, 255, 0.3);
+  background: transparent;
+  color: rgba(255, 255, 255, 0.65);
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  letter-spacing: 0.03em;
+  transition: background var(--transition), color var(--transition), border-color var(--transition);
+}
+
+.archiv__year-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.6);
+  color: #ffffff;
+}
+
+.archiv__year-btn.is-active {
+  background: #ffffff;
+  border-color: #ffffff;
+  color: #000000;
+}
+
+/* ===== Responsive ===== */
+
+@media (max-width: 900px) {
+  .archiv__entry {
+    grid-template-columns: 1fr;
+    gap: 1.75rem;
+    margin-bottom: 4rem;
+  }
+
+  .archiv__entry--alt .archiv__entry-text { order: unset; }
+  .archiv__entry--alt .archiv__entry-img  { order: unset; }
+
+  .archiv__entry-img img {
+    height: auto;
+  }
+}
+
+@media (max-width: 767px) {
+  .archiv-page {
+    padding: 2.5rem var(--gutter) 4rem;
+  }
+
+  .archiv-page__heading {
+    margin-bottom: 2.5rem;
+  }
+}

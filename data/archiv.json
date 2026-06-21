@@ -1,0 +1,149 @@
+{
+  "years": [
+    {
+      "year": "2026",
+      "concerts": [
+        {
+          "title": "Mai 2026 – liminal space",
+          "description": "Wie ein Möbelstück soll Musik sein, findet Erik Satie: den Raum verschönern, ohne ihn gänzlich einzunehmen. In diesem Sinne konnten sich die Gäste frei bewegen, Cocktails und Snacks geniessen, während ein Klangteppich aus Werken von Erik Satie, Marie Awadis, Nadia Boulanger und Philip Glass den Raum erfüllte.",
+          "imageSrc": "images/archiv/2026-1.webp"
+        },
+        {
+          "title": "Anfang 2026 – Familienkonzert: Der Froschkönig",
+          "description": "Das fünfte Familienkonzert des Trio Note à Note erfand den Grimm-Klassiker neu. Mit Illustrationen von Yasemin Günay, Erzählung von Julia Frischknecht und Musik gespielt von Livia Gučanin, Magdalena Zwahlen und Sharon Mazzoletti.",
+          "imageSrc": "images/archiv/2026-2.webp"
+        }
+      ]
+    },
+    {
+      "year": "2025",
+      "concerts": [
+        {
+          "title": "September 2025 – Herbsttöne",
+          "description": "Mit Werken von Franz Doppler, Anna Bon di Venezia, Wolfgang Amadeus Mozart, Mélanie Bonis, Madeleine Dring und Caspar Kummer läutete das Trio Note à Note den Herbst ein.",
+          "imageSrc": "images/archiv/2025-1.webp"
+        },
+        {
+          "title": "Mai 2025 – Jeux",
+          "description": "Benannt nach Germaine Tailleferres «Jeux de plein Air» kombinierten die beiden Hälften des Klavierduos Duo DieDa ihre Lieblingsmusik zu einem halb französischen (nebst Tailleferre Francis Poulenc) und halb spätromantischen (Amy Beach, Ethel Smyth) Programm für zwei Klaviere.",
+          "imageSrc": "images/archiv/2025-2.webp"
+        },
+        {
+          "title": "Februar 2025 – Familienkonzert: Die kleine Meerjungfrau",
+          "description": "Das vierte Familienkonzert des Trio Note à Note erzählte Hans Christian Andersens tragische Geschichte einer kleinen Meerjungfrau, die erkennen muss, dass sie das Herz des Prinzen nicht gewinnen kann, indem sie sich selbst aufgibt – mit einem feministischen Spin und Konzertprogramm und Illustrationen von Yasemin Günay.",
+          "imageSrc": "images/archiv/2025-3.webp"
+        },
+        {
+          "title": "Januar 2025 – Tales of Two Flutes",
+          "description": "Das Trio Note à Note startete das Jahr 2025 mit einem rein weiblichen Programm, welches vier Jahrhunderte umspannte und die Schicksale von Komponistinnen in verschiedensten Ländern und Epochen beleuchtete.",
+          "imageSrc": "images/archiv/2025-4.webp"
+        }
+      ]
+    },
+    {
+      "year": "2024",
+      "concerts": [
+        {
+          "title": "November 2024 – Voyage à Paris",
+          "description": "Ihr neues Konzertprogramm widmete das Duo Müller-Mazzoletti Albans Muttersprache. Es erklangen Lieder von Nadia Boulanger, Francis Poulenc und Arthur Honegger, kombiniert mit Klavierwerken von Lili Boulanger und Maurice Ravel.",
+          "imageSrc": "images/archiv/2024-1.webp"
+        },
+        {
+          "title": "Juni 2024 – Song of the Banshee",
+          "description": "Die Banshee, eine klagende Feenfrau aus der keltischen Mythologie, kündigt mit ihrem Schrei den nahen Tod eines Familienmitglieds an. Diesem Vorstellung entsprechend präsentierte mein Masterrezital ein Programm aus Spätwerken von Lili Boulanger, Ludwig van Beethoven, Robert Schumann und weiteren Komponist:innen, welches die Auseinandersetzung mit dem Tod in Musik erfahrbar machte. In Zusammenarbeit mit Alban Müller (Bariton), Melanie Krebser (Violine) und Melina Wegner (Violoncello).",
+          "imageSrc": "images/archiv/2024-2.webp"
+        },
+        {
+          "title": "März 2024 – Frühlingskonzerte",
+          "description": "Früh wie die Schneeglöckchen im letzten Schnee läutete das Trio Note à Note 2024 den Frühling ein – mit Werken von Franz Doppler, Ian Clarke, Barbara Hidber, Léo Delibes, Gary Schocker, Jacques Ibert und Herman Beeftink.",
+          "imageSrc": "images/archiv/2024-3.webp"
+        },
+        {
+          "title": "Januar 2024 – Duo DieDa",
+          "description": "Exklusiv für die Vereinsmitglieder der KiK spielte das Duo DieDa Dmitri Schostakowitschs grosse Werke für zwei Klaviere: die Suite op. 6 auf den Tod seines Vaters und das Concertino op. 94 für seinen Sohn.",
+          "imageSrc": "images/archiv/2024-4.webp"
+        }
+      ]
+    },
+    {
+      "year": "2023",
+      "concerts": [
+        {
+          "title": "November 2023 – KiK-Festival",
+          "description": "Ein ganzes Wochenende im November widmeten die Krienser Industrie Konzerte dem zweijährigen Jubiläum ihres Debuts.",
+          "imageSrc": "images/archiv/2023-1.webp"
+        },
+        {
+          "title": "September 2023 – Herbstkonzerte",
+          "description": "Mit Werken von Franz Doppler, Bohuslav Martinů, Mélanie Bonis, Jacques Ibert und Gary Schocker läutete das Trio Note à Note den Herbst ein.",
+          "imageSrc": "images/archiv/2023-2.webp"
+        },
+        {
+          "title": "Mai 2023 – Tänze",
+          "description": "Das Duo DieDa brachte Klassiker aus Antonín Dvořáks Tänzen op. 46 und 72 in Kombination mit Arrangements zur Aufführung.",
+          "imageSrc": "images/archiv/2023-3.webp"
+        },
+        {
+          "title": "März 2023 – Dichterliebe",
+          "description": "Nach dem Debut im Dezember 2021 nahm das Duo Müller-Mazzoletti den Dichterliebe-Zyklus von Robert Schumann wieder auf.",
+          "imageSrc": "images/archiv/2023-4.webp"
+        },
+        {
+          "title": "Februar 2023 – Familienkonzert: Der gestiefelte Kater",
+          "description": "Für sein drittes Familienkonzert nahm sich das Trio Note à Note das Grimm-Märchen vom gestiefelten Kater zur Vorlage.",
+          "imageSrc": "images/archiv/2023-5.webp"
+        },
+        {
+          "title": "Januar 2023 – Nusskonzert",
+          "description": "Das Duo DieDa lud zu einem kulinarischen Konzert. Schwarze Nüsse sind unreif geerntete Walnüsse.",
+          "imageSrc": "images/archiv/2023-6.webp"
+        }
+      ]
+    },
+    {
+      "year": "2022",
+      "concerts": [
+        {
+          "title": "Silvester – Neujahrskonzerte 2022/2023",
+          "description": "Mit Werken von Johann Sebastian Bach, Franz Doppler, Claude Debussy und Gary Schocker läutete das Trio Note à Note das neue Jahr ein.",
+          "imageSrc": "images/archiv/2022-1.webp"
+        },
+        {
+          "title": "September 2022 – L'enfant et les Sortilèges",
+          "description": "Als Teil des Hochschulorchesters durfte ich bei der Aufführung von Ravels Kinderoper «Das Kind und der Zauberspuk» mitwirken. Die Oper handelt von einem Kind, das seiner Mutter die Zunge herausstreckt und in einem Anfall kindlichen Trotzes sein Zimmer zerstört – da erwachen die Möbel und Tapeten zum Leben und die Tiere fangen an zu sprechen.",
+          "imageSrc": "images/archiv/2022-2.webp"
+        },
+        {
+          "title": "Juni 2022 – Akzente",
+          "description": "Das Trio Bruch (benannt nach dem Bruch-Quartier in Luzern, wo die Mitwirkenden Diana Sonja Tobler, Fabian Tschopp und Sharon Mazzoletti wohnten) erforschte in «Akzente» Werke für die ungewöhnliche Besetzung Flöte – Violine – Klavier. Mit Werken von Bohuslav Martinů, Dmitri Schostakowitsch, Mélanie Bonis und Johann Sebastian Bach.",
+          "imageSrc": ""
+        },
+        {
+          "title": "Februar 2022 – Brahms Trio",
+          "description": "Diana Sonja Tobler, David Pfistner und Sharon Mazzoletti führten das erste Trio op. 8 in H-Dur von Johannes Brahms im Rahmen der Krienser Industrie Konzerte auf.",
+          "imageSrc": "images/archiv/2022-3.webp"
+        }
+      ]
+    },
+    {
+      "year": "2021",
+      "concerts": [
+        {
+          "title": "Dezember 2021 – Dichterliebe und Davidsbündler",
+          "description": "Das Duo Müller-Mazzoletti debütierte mit einem reinen Schumann-Programm. Das Duo musizierte Robert Schumanns Liedzyklus «Dichterliebe», kombiniert mit seinem Zyklus «Davidsbündlertänze» für Klavier solo.",
+          "imageSrc": "images/archiv/2021-1.webp"
+        },
+        {
+          "title": "November 2021 – Kleiderbügelkonzert",
+          "description": "Das Duo DieDa weihte die Konzertreihe KiK ein – und nahm als Eintrittszahlung Kleiderbügel für die leeren Garderobenständer an.",
+          "imageSrc": "images/archiv/2021-2.webp"
+        },
+        {
+          "title": "Oktober 2021 – Familienkonzert: Momo",
+          "description": "Nach dem Erfolg des Kinderkonzert-Formats mit dem Debut «Pinocchio» widmete das Trio Note à Note (in neuer Besetzung mit Sharon Mazzoletti am Klavier) seine zweite Kinderkonzertreihe dem Roman «Momo» von Michael Ende. Mit «Momo» begann die Zusammenarbeit des Trio Note à Note mit Illustratorin Yasemin Günay, welche nebst dem Flyerbild zehn weitere Bilder zur Untermalung des musikalischen Märchens zeichnete. Das Trio und Märchenerzähler Arion Rudari traten viermal öffentlich auf und durften für die Primarschule Stansstad zwei schulinterne Aufführungen für alle Kindergarten- und Primarschulkinder der Gemeinde geben.",
+          "imageSrc": "images/archiv/2021-3.webp"
+        }
+      ]
+    }
+  ]
+}

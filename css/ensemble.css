@@ -1,0 +1,331 @@
+/* Per-page overrideable palette — trio defaults: black / dark-blue */
+:root {
+  --ens-bg-a: #000000;   /* sections 1 & 3 (odd) */
+  --ens-bg-b: #0c0042;   /* sections 2 & 4 (even) + body */
+}
+
+body {
+  background: var(--ens-bg-b);
+}
+
+/* ===================================================
+   Section 1 – Intro  (bg-a)
+   =================================================== */
+
+.ens-intro {
+  padding: 2.5rem var(--gutter) 5rem;
+  background: var(--ens-bg-a);
+}
+
+.ens-intro__inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.ens-intro__heading {
+  font-family: var(--font-heading);
+  font-size: clamp(2.2rem, 4vw, 3.5rem);
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  color: #ffffff;
+  text-align: center;
+  margin: 0 0 2.5rem;
+}
+
+.ens-intro__img {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin-bottom: 2.5rem;
+}
+
+.ens-intro__body {
+  font-size: clamp(1.05rem, 1.2vw, 1.15rem);
+  line-height: 1.75;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.ens-intro__body p {
+  margin: 0 0 1.1em;
+}
+
+.ens-intro__body p:last-child {
+  margin-bottom: 0;
+}
+
+.ens-intro__body a {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.ens-intro__body a:hover {
+  color: #ffffff;
+}
+
+.ens-btn {
+  display: block;
+  width: fit-content;
+  margin: 2.25rem auto 0;
+  padding: 0.7em 2.2em;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  border: 1.5px solid #ffffff;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #000000;
+  text-decoration: none;
+  transition: background var(--transition), color var(--transition), border-color var(--transition);
+}
+
+.ens-btn:hover {
+  background: rgba(255, 255, 255, 0.85);
+  border-color: rgba(255, 255, 255, 0.85);
+}
+
+/* ===================================================
+   Section 2 – Gallery  (blue bg)
+   =================================================== */
+
+.ens-gallery {
+  padding: 4rem var(--gutter) 5rem;
+  background: var(--ens-bg-b);
+}
+
+.ens-gallery__inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.ens-gallery__stage {
+  width: 100%;
+  height: 70vh;
+  min-height: 300px;
+  max-height: 800px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.25rem;
+}
+
+.ens-gallery__main-img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.ens-gallery__thumbs {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.ens-gallery__thumb {
+  width: 120px;
+  height: 80px;
+  object-fit: cover;
+  cursor: pointer;
+  opacity: 0.6;
+  border: 2px solid transparent;
+  transition: opacity var(--transition), border-color var(--transition);
+  display: block;
+}
+
+.ens-gallery__thumb.is-active,
+.ens-gallery__thumb:hover {
+  opacity: 1;
+  border-color: var(--color-accent);
+}
+
+.ens-gallery__nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.ens-gallery__arrow {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background var(--transition), border-color var(--transition);
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.ens-gallery__arrow:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--color-accent);
+}
+
+.ens-gallery__arrow:disabled {
+  opacity: 0.25;
+  cursor: default;
+}
+
+.ens-gallery__arrow svg {
+  width: 18px;
+  height: 12px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+}
+
+.ens-gallery__counter {
+  text-align: center;
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: 0.05em;
+  min-width: 60px;
+}
+
+/* ===================================================
+   Section 3 – Video  (black bg)
+   =================================================== */
+
+.ens-video {
+  padding: 5rem var(--gutter);
+  background: var(--ens-bg-a);
+}
+
+.ens-video__inner {
+  max-width: 820px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.ens-video__heading {
+  font-family: var(--font-heading);
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  font-weight: 400;
+  color: #ffffff;
+  margin-bottom: 1.25rem;
+}
+
+.ens-video__desc {
+  color: rgba(255, 255, 255, 0.82);
+  font-size: clamp(1.05rem, 1.2vw, 1.15rem);
+  line-height: 1.75;
+  margin-bottom: 2.25rem;
+}
+
+.ens-video__desc p {
+  margin: 0 0 0.75em;
+}
+
+.ens-video__desc p:last-child {
+  margin-bottom: 0;
+}
+
+.ens-video__desc a {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.ens-video__desc a:hover {
+  color: #ffffff;
+}
+
+.ens-video__embed-wrap {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+}
+
+.ens-video__embed {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* Override repertoire.css's hardcoded bg so per-page palette applies */
+.repertoire {
+  background-color: var(--ens-bg-b);
+}
+
+/* ===================================================
+   Section 4 – Repertoire  (bg-b, uses repertoire.css)
+   Two explicit columns so each category stays with its items.
+   =================================================== */
+
+/* Two-column wrapper (replaces repertoire__list on ensemble pages) */
+.repertoire__col-wrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 2.5rem;
+  align-items: start;
+}
+
+.repertoire__col-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Category headings within each column */
+.repertoire__category {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.72);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  padding: 1.5rem 0 0.25rem;
+  border-bottom: none;
+}
+
+.repertoire__col-list .repertoire__category:first-child {
+  padding-top: 0;
+}
+
+/* ===================================================
+   Responsive
+   =================================================== */
+
+@media (max-width: 900px) {
+  .repertoire__col-wrap {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 767px) {
+  .ens-intro {
+    padding: 1.25rem var(--gutter) 3rem;
+  }
+
+  .ens-gallery {
+    padding: 2.5rem var(--gutter) 3rem;
+  }
+
+  .ens-gallery__stage {
+    height: 50vh;
+  }
+
+  .ens-gallery__thumb {
+    width: 72px;
+    height: 48px;
+  }
+
+  .ens-gallery__arrow {
+    width: 40px;
+    height: 40px;
+  }
+
+  .ens-video {
+    padding: 3rem var(--gutter);
+  }
+}

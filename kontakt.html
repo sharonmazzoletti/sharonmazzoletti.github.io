@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="de-CH">
+<head>
+  <meta charset="utf-8">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kontakt – Sharon Mazzoletti</title>
+  <link rel="canonical" href="https://www.sharonmazzoletti.ch/kontakt.html">
+
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/header.css">
+
+  <style>
+    body { background: #0c0042; }
+
+    .kontakt-page {
+      min-height: calc(100vh - 64px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem var(--gutter);
+    }
+
+    .kontakt-page__inner {
+      text-align: center;
+    }
+
+    .kontakt-page__heading {
+      font-family: var(--font-heading);
+      font-size: clamp(2.2rem, 4vw, 3.5rem);
+      font-weight: 400;
+      letter-spacing: 0.03em;
+      color: #ffffff;
+      margin: 0 0 1.25rem;
+    }
+
+    .kontakt-page__text {
+      font-size: clamp(1.05rem, 1.2vw, 1.15rem);
+      line-height: 1.75;
+      color: rgba(255, 255, 255, 0.75);
+      max-width: 520px;
+      margin: 0 auto 2rem;
+    }
+
+    .kontakt-page__link {
+      display: inline-block;
+      padding: 0.75em 2.4em;
+      font-family: var(--font-body);
+      font-size: 1rem;
+      border: 1.5px solid #ffffff;
+      border-radius: 999px;
+      background: #ffffff;
+      color: #000000;
+      text-decoration: none;
+      transition: background var(--transition), border-color var(--transition);
+    }
+
+    .kontakt-page__link:hover {
+      background: rgba(255, 255, 255, 0.85);
+      border-color: rgba(255, 255, 255, 0.85);
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header class="site-header" id="site-header">
+  <div class="site-header__blur"></div>
+  <div class="site-header__inner">
+
+    <a href="index.html" class="site-header__logo">Sharon Mazzoletti</a>
+
+    <nav class="site-nav" aria-label="Hauptnavigation">
+      <div class="site-nav__item"><a href="index.html" class="site-nav__link">Home</a></div>
+      <div class="site-nav__item"><a href="vita.html" class="site-nav__link">Vita</a></div>
+      <div class="site-nav__item">
+        <button class="site-nav__folder-btn" aria-expanded="false" aria-controls="nav-ensembles">
+          Ensembles
+          <svg width="10" height="6" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M1 1l4 4 4-4"/></svg>
+        </button>
+        <div class="site-nav__dropdown" id="nav-ensembles">
+          <a href="trio-note-a-note.html" class="site-nav__dropdown-link">Trio Note à Note</a>
+          <a href="duo-muller-mazzoletti.html" class="site-nav__dropdown-link">Duo Müller-Mazzoletti</a>
+          <a href="duo-dieda.html" class="site-nav__dropdown-link">Duo DieDa</a>
+        </div>
+      </div>
+      <div class="site-nav__item">
+        <button class="site-nav__folder-btn" aria-expanded="false" aria-controls="nav-archiv" data-href="konzertarchiv.html">
+          Konzertarchiv
+          <svg width="10" height="6" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M1 1l4 4 4-4"/></svg>
+        </button>
+        <div class="site-nav__dropdown" id="nav-archiv">
+          <a href="konzertarchiv.html#2026" class="site-nav__dropdown-link">2026</a>
+          <a href="konzertarchiv.html#2025" class="site-nav__dropdown-link">2025</a>
+          <a href="konzertarchiv.html#2024" class="site-nav__dropdown-link">2024</a>
+          <a href="konzertarchiv.html#2023" class="site-nav__dropdown-link">2023</a>
+          <a href="konzertarchiv.html#2022" class="site-nav__dropdown-link">2022</a>
+          <a href="konzertarchiv.html#2021" class="site-nav__dropdown-link">2021</a>
+        </div>
+      </div>
+      <div class="site-nav__item"><a href="kik.html" class="site-nav__link">KiK</a></div>
+      <div class="site-nav__item"><a href="video.html" class="site-nav__link">Video</a></div>
+      <div class="site-nav__item"><a href="kontakt.html" class="site-nav__link" aria-current="page">Kontakt</a></div>
+    </nav>
+
+    <button class="site-header__hamburger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobile-nav">
+      <span></span><span></span><span></span>
+    </button>
+
+  </div>
+</header>
+
+<nav class="mobile-nav" id="mobile-nav" aria-label="Mobile Navigation">
+  <div class="mobile-nav__item"><a href="index.html" class="mobile-nav__link">Home</a></div>
+  <div class="mobile-nav__item"><a href="vita.html" class="mobile-nav__link">Vita</a></div>
+  <div class="mobile-nav__item">
+    <button class="mobile-nav__folder-btn" aria-expanded="false">Ensembles</button>
+    <div class="mobile-nav__sub">
+      <a href="trio-note-a-note.html" class="mobile-nav__sub-link">Trio Note à Note</a>
+      <a href="duo-muller-mazzoletti.html" class="mobile-nav__sub-link">Duo Müller-Mazzoletti</a>
+      <a href="duo-dieda.html" class="mobile-nav__sub-link">Duo DieDa</a>
+    </div>
+  </div>
+  <div class="mobile-nav__item">
+    <button class="mobile-nav__folder-btn" aria-expanded="false">Konzertarchiv</button>
+    <div class="mobile-nav__sub">
+      <a href="konzertarchiv.html#2026" class="mobile-nav__sub-link">2026</a>
+      <a href="konzertarchiv.html#2025" class="mobile-nav__sub-link">2025</a>
+      <a href="konzertarchiv.html#2024" class="mobile-nav__sub-link">2024</a>
+      <a href="konzertarchiv.html#2023" class="mobile-nav__sub-link">2023</a>
+      <a href="konzertarchiv.html#2022" class="mobile-nav__sub-link">2022</a>
+      <a href="konzertarchiv.html#2021" class="mobile-nav__sub-link">2021</a>
+    </div>
+  </div>
+  <div class="mobile-nav__item"><a href="kik.html" class="mobile-nav__link">KiK</a></div>
+  <div class="mobile-nav__item"><a href="video.html" class="mobile-nav__link">Video</a></div>
+  <div class="mobile-nav__item"><a href="kontakt.html" class="mobile-nav__link">Kontakt</a></div>
+</nav>
+
+<!-- ===== MAIN ===== -->
+<div class="kontakt-page">
+  <div class="kontakt-page__inner">
+    <h1 class="kontakt-page__heading">Kontakt</h1>
+    <p class="kontakt-page__text" id="kontaktText"></p>
+    <a id="kontaktLink" href="#" class="kontakt-page__link">Kontakt aufnehmen</a>
+  </div>
+</div>
+
+<script src="js/nav.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', async () => {
+    try {
+      const res = await fetch('/data/kontakt.json');
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const data = await res.json();
+      document.getElementById('kontaktText').textContent = data.text || '';
+      const link = document.getElementById('kontaktLink');
+      link.href = 'mailto:' + data.email;
+      link.textContent = data.label;
+    } catch (err) {
+      console.error('Fehler:', err);
+    }
+  });
+</script>
+
+</body>
+</html>

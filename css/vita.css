@@ -1,0 +1,80 @@
+body {
+  background: #0c0042;
+}
+
+.vita {
+  background: #0c0042;
+  padding: calc(var(--header-height) + 4rem) var(--gutter) 5rem;
+}
+
+.vita__inner {
+  display: grid;
+  grid-template-columns: 1fr 38%;
+  gap: 5rem;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  align-items: start;
+}
+
+.vita__heading {
+  font-family: var(--font-heading);
+  font-size: clamp(2.2rem, 4vw, 3.5rem);
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  margin-bottom: 1.75rem;
+  color: #ffffff;
+}
+
+.vita__body {
+  font-size: clamp(1.05rem, 1.2vw, 1.15rem);
+  line-height: 1.75;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.vita__body p {
+  margin: 0 0 1.1em;
+}
+
+.vita__body p:last-child {
+  margin-bottom: 0;
+}
+
+.vita__body a {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.vita__body a:hover {
+  color: #ffffff;
+}
+
+.vita__img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+@media (max-width: 767px) {
+  .vita {
+    padding: 0 0 3rem;
+  }
+
+  .vita__inner {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .vita__image-col {
+    order: -1;
+  }
+
+  .vita__img {
+    width: 100%;
+    height: auto;
+  }
+
+  .vita__text-col {
+    padding: 2.5rem var(--gutter) 0;
+  }
+}

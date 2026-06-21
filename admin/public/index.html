@@ -1,0 +1,2450 @@
+<!doctype html>
+<html lang="de-CH">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin – Sharon Mazzoletti</title>
+  <style>
+    :root {
+      --accent: #97d30c;
+      --accent-dark: #7aab09;
+      --text: #2b2b2b;
+      --bg: #f7f7f5;
+      --card-bg: #fff;
+      --border: #e0e0d8;
+      --radius: 6px;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    body { margin: 0; font-family: system-ui, sans-serif; font-size: 0.95rem; background: var(--bg); color: var(--text); }
+    header { background: var(--card-bg); border-bottom: 1px solid var(--border); padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+    header h1 { margin: 0; font-size: 1.1rem; font-weight: 600; }
+    .tabs { background: var(--card-bg); border-bottom: 1px solid var(--border); display: flex; padding: 0 2rem; }
+    .tab-btn { padding: 0.75rem 1.25rem; background: none; border: none; border-bottom: 2px solid transparent; font: inherit; font-size: 0.9rem; cursor: pointer; color: #888; transition: color 0.15s, border-color 0.15s; }
+    .tab-btn.active { color: var(--text); border-bottom-color: var(--accent); font-weight: 600; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+    main { max-width: 960px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+    .field { margin-bottom: 0.75rem; }
+    label { display: block; font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #777; margin-bottom: 0.25rem; }
+    input[type="text"], input[type="url"], input[type="email"], textarea {
+      width: 100%; padding: 0.5rem 0.7rem; border: 1px solid var(--border); border-radius: var(--radius);
+      font: inherit; background: var(--bg); color: var(--text); resize: vertical;
+    }
+    textarea { min-height: 80px; }
+    input:focus, textarea:focus { outline: 2px solid var(--accent); border-color: var(--accent); background: #fff; }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    .btn { display: inline-flex; align-items: center; gap: 0.35em; padding: 0.45em 1.1em; border-radius: var(--radius); border: 1px solid transparent; font: inherit; font-size: 0.875rem; cursor: pointer; transition: background 0.15s, color 0.15s; }
+    .btn--primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .btn--primary:hover { background: var(--accent-dark); border-color: var(--accent-dark); }
+    .btn--secondary { background: #fff; color: var(--text); border-color: var(--border); }
+    .btn--secondary:hover { background: var(--bg); }
+    .btn--danger { background: #fff; color: #c0392b; border-color: #e0b0aa; }
+    .btn--danger:hover { background: #fff0ee; }
+    .btn--sm { font-size: 0.78rem; padding: 0.3em 0.7em; }
+    .btn--icon { font-size: 0.78rem; padding: 0.3em 0.45em; min-width: 0; }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
+    .actions { display: flex; gap: 0.75rem; margin-top: 1.5rem; flex-wrap: wrap; align-items: center; }
+    .toast { display: none; padding: 0.6rem 1.2rem; border-radius: var(--radius); font-size: 0.9rem; }
+    .toast--success { background: #edfad3; color: #3a6a00; border: 1px solid var(--accent); }
+    .toast--error { background: #fdecea; color: #900; border: 1px solid #f5a5a0; }
+
+    /* Event cards */
+    .events-list { display: flex; flex-direction: column; gap: 1.25rem; }
+    .event-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; }
+    .event-card__header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap; }
+    .event-card__order { display: flex; gap: 0.25rem; }
+
+    /* Date/location entries */
+    .dates-list { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 0.4rem; }
+    .date-entry { display: grid; grid-template-columns: auto auto 1fr auto auto auto; gap: 0.3rem; align-items: center; }
+    .date-parts { display: flex; align-items: center; gap: 1px; white-space: nowrap; }
+    .date-parts input {
+      text-align: center; padding: 0.5rem 0.3rem; border: 1px solid var(--border);
+      border-radius: var(--radius); background: var(--bg); color: var(--text); font: inherit;
+    }
+    .date-parts input[data-p="d"], .date-parts input[data-p="mo"],
+    .date-parts input[data-p="h"],  .date-parts input[data-p="mi"] { width: 2.6em; }
+    .date-parts input[data-p="y"] { width: 4em; }
+    .date-parts .sep { color: #aaa; padding: 0 1px; font-size: 0.9em; user-select: none; }
+    @media (max-width: 640px) {
+      .date-entry { grid-template-columns: 1fr auto; }
+      .date-entry .date-parts:first-of-type { grid-column: 1; }
+      .date-entry .date-parts:last-of-type  { grid-column: 1; }
+      .date-entry input[type="text"]         { grid-column: 1; }
+    }
+
+    /* Rich text editor */
+    .rich-toolbar { display: flex; gap: 2px; margin-bottom: 2px; }
+    .rtb {
+      padding: 0.2em 0.6em; border: 1px solid var(--border); border-radius: 3px;
+      background: var(--bg); font: inherit; font-size: 0.85rem; cursor: pointer; line-height: 1.4;
+      color: var(--text);
+    }
+    .rtb:hover { background: #ebebeb; }
+    .rtb b { font-weight: 700; }
+    .rtb i { font-style: italic; }
+    .rtb u { text-decoration: underline; }
+    .rich-editor {
+      width: 100%; min-height: 100px; padding: 0.5rem 0.7rem;
+      border: 1px solid var(--border); border-radius: var(--radius);
+      background: var(--bg); color: var(--text);
+      font: inherit; line-height: 1.5;
+    }
+    .rich-editor:focus { outline: 2px solid var(--accent); border-color: var(--accent); background: #fff; }
+    .rich-editor p { margin: 0 0 0.4em; }
+    .rich-editor p:last-child { margin-bottom: 0; }
+    .rich-editor br { display: block; }
+
+    /* Image upload */
+    .image-current { display: flex; align-items: flex-start; gap: 0.75rem; margin-bottom: 0.5rem; flex-wrap: wrap; }
+    .image-current img { max-width: 140px; height: 90px; object-fit: cover; border-radius: 4px; border: 1px solid var(--border); }
+    .image-current-info { font-size: 0.78rem; color: #777; display: flex; flex-direction: column; gap: 0.4rem; justify-content: center; }
+    .image-current-path { word-break: break-all; }
+    .upload-area {
+      border: 2px dashed var(--border); border-radius: var(--radius); padding: 0.75rem 1rem;
+      text-align: center; cursor: pointer; position: relative; font-size: 0.85rem; color: #888;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .upload-area:hover, .upload-area.drag-over { border-color: var(--accent); background: #f5ffe0; }
+    .upload-area input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+    .upload-area strong { color: var(--accent-dark); }
+    .upload-status { font-size: 0.8rem; margin-top: 0.3rem; color: #555; min-height: 1.2em; }
+    .upload-status.err { color: #c0392b; }
+
+    /* Button link toggle */
+    .btn-type-toggle { display: flex; gap: 0; margin-bottom: 0.5rem; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; width: fit-content; }
+    .btn-type-toggle input[type="radio"] { display: none; }
+    .btn-type-toggle label {
+      padding: 0.3em 0.9em; font-size: 0.8rem; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.04em; cursor: pointer; background: var(--bg); color: #888;
+      transition: background 0.15s, color 0.15s;
+    }
+    .btn-type-toggle input[type="radio"]:checked + label { background: var(--accent); color: #fff; }
+    .mail-fields { background: #f9f9f7; border: 1px solid var(--border); border-radius: var(--radius); padding: 0.75rem; margin-top: 0.25rem; display: flex; flex-direction: column; gap: 0.5rem; }
+    .mail-fields label { font-size: 0.72rem; color: #999; margin-bottom: 0; }
+
+    /* Repertoire drag list */
+    .rep-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+    .rep-row { position: relative; display: flex; align-items: center; gap: 0.5rem; background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 0.4rem 0.6rem; cursor: grab; user-select: none; transition: margin 0.08s ease; }
+    .rep-row:active { cursor: grabbing; }
+    .rep-row.dragging { opacity: 0.35; }
+    .rep-row.drop-above { margin-top: 12px; }
+    .rep-row.drop-above::before { content: ''; position: absolute; top: -7px; left: 0; right: 0; height: 2px; background: var(--accent); border-radius: 0; }
+    .rep-row.drop-below { margin-bottom: 12px; }
+    .rep-row.drop-below::after  { content: ''; position: absolute; bottom: -7px; left: 0; right: 0; height: 2px; background: var(--accent); border-radius: 0; }
+    .rep-row__handle { color: #bbb; font-size: 1.1rem; flex-shrink: 0; cursor: grab; line-height: 1; }
+    .rep-row input { flex: 1; border: none; background: transparent; padding: 0.2rem 0.3rem; font: inherit; color: var(--text); border-radius: 3px; }
+    .rep-row input:focus { outline: 2px solid var(--accent); background: #fff; }
+    .rep-row .btn--danger { flex-shrink: 0; padding: 0.2em 0.5em; font-size: 0.8rem; }
+    .rep-hint { font-size: 0.8rem; color: #999; margin: 0 0 0.75rem; }
+    @media (max-width: 640px) { .field-row { grid-template-columns: 1fr; } }
+    #publishBar { background: var(--card-bg); border-bottom: 1px solid var(--border); padding: 0.6rem 2rem; display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
+    #publishBar input[type="text"] { flex: 1; min-width: 180px; margin: 0; }
+    #publishStatus { font-size: 0.85rem; color: #555; white-space: nowrap; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Sharon Mazzoletti – Admin</h1>
+  <a href="http://localhost:3000" target="_blank" rel="noopener" class="btn btn--secondary btn--sm">Vorschau öffnen ↗</a>
+</header>
+
+<div id="publishBar">
+  <input type="text" id="commitMsg" placeholder="Was wurde geändert? z.B. «Neues Konzert hinzugefügt»">
+  <button class="btn btn--primary btn--sm" id="publishBtn">Veröffentlichen</button>
+  <span id="publishStatus"></span>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" data-tab="events">Demnächst</button>
+  <button class="tab-btn" data-tab="repertoire">Repertoire</button>
+  <button class="tab-btn" data-tab="vita">Vita</button>
+  <button class="tab-btn" data-tab="trio">Trio Note à Note</button>
+  <button class="tab-btn" data-tab="duo-mm">Duo Müller-Mazzoletti</button>
+  <button class="tab-btn" data-tab="duo-dieda">Duo DieDa</button>
+  <button class="tab-btn" data-tab="archiv">Konzertarchiv</button>
+  <button class="tab-btn" data-tab="kik">KiK</button>
+  <button class="tab-btn" data-tab="video">Video</button>
+  <button class="tab-btn" data-tab="kontakt">Kontakt</button>
+</div>
+
+<main>
+
+  <!-- Events tab -->
+  <div class="tab-panel active" id="tab-events">
+    <div class="events-list" id="eventsList"></div>
+    <div class="actions">
+      <button class="btn btn--secondary" id="addBtn">+ Veranstaltung hinzufügen</button>
+      <button class="btn btn--primary" id="saveEventsBtn">Speichern</button>
+      <span class="toast" id="toastEvents"></span>
+    </div>
+  </div>
+
+  <!-- Vita tab -->
+  <div class="tab-panel" id="tab-vita">
+    <div class="field">
+      <label>Vita-Text</label>
+      <div class="rich-toolbar" id="vitaToolbar">
+        <button type="button" class="rtb" data-cmd="bold" title="Fett (Ctrl+B)"><b>B</b></button>
+        <button type="button" class="rtb" data-cmd="italic" title="Kursiv (Ctrl+I)"><i>I</i></button>
+        <button type="button" class="rtb" data-cmd="underline" title="Unterstrichen (Ctrl+U)"><u>U</u></button>
+        <button type="button" class="rtb" id="vitaLinkBtn" title="Link einfügen">A&#x2197;</button>
+        <button type="button" class="rtb" data-cmd="unlink" title="Link entfernen">A&#x00D7;</button>
+      </div>
+      <div class="rich-editor" id="vitaEditor" contenteditable="true" style="min-height:200px"></div>
+    </div>
+    <div class="actions">
+      <button class="btn btn--primary" id="saveVitaBtn">Speichern</button>
+      <span class="toast" id="toastVita"></span>
+    </div>
+  </div>
+
+  <!-- Repertoire tab -->
+  <div class="tab-panel" id="tab-repertoire">
+    <p class="rep-hint">Einträge per Drag &amp; Drop verschieben.</p>
+    <ul class="rep-list" id="repList"></ul>
+    <div class="actions">
+      <button class="btn btn--secondary btn--sm" id="addRepBtn">+ Eintrag hinzufügen</button>
+      <button class="btn btn--primary" id="saveRepBtn">Speichern</button>
+      <span class="toast" id="toastRep"></span>
+    </div>
+  </div>
+
+
+  <!-- Trio Note à Note tab -->
+  <div class="tab-panel" id="tab-trio">
+
+    <h3 style="margin:0 0 1rem;font-size:1rem;font-weight:600;border-bottom:1px solid var(--border);padding-bottom:0.5rem;">1. Intro</h3>
+
+    <div class="field">
+      <label>Intro-Text</label>
+      <div class="rich-toolbar" id="trioIntroToolbar">
+        <button type="button" class="rtb" data-cmd="bold" title="Fett"><b>B</b></button>
+        <button type="button" class="rtb" data-cmd="italic" title="Kursiv"><i>I</i></button>
+        <button type="button" class="rtb" data-cmd="underline" title="Unterstrichen"><u>U</u></button>
+        <button type="button" class="rtb" id="trioIntroLinkBtn" title="Link einfügen">A&#x2197;</button>
+        <button type="button" class="rtb" data-cmd="unlink" title="Link entfernen">A&#x00D7;</button>
+      </div>
+      <div class="rich-editor" id="trioIntroEditor" contenteditable="true" style="min-height:160px"></div>
+    </div>
+    <div class="field">
+      <label>Kontakt-Button Text</label>
+      <input type="text" id="trioBtnText">
+    </div>
+    <div class="field">
+      <label>Kontakt-Button Link</label>
+      <div class="btn-type-toggle">
+        <input type="radio" name="trio-btn-type" id="trio-btn-type-url" value="url" checked>
+        <label for="trio-btn-type-url">URL</label>
+        <input type="radio" name="trio-btn-type" id="trio-btn-type-mail" value="mail">
+        <label for="trio-btn-type-mail">E-Mail</label>
+      </div>
+      <div id="trioBtnUrlWrap" style="margin-top:0.4rem">
+        <input type="text" id="trioBtnHref" placeholder="https://… oder stubs/kontakt.html">
+      </div>
+      <div class="mail-fields" id="trioBtnMailWrap" style="display:none">
+        <div>
+          <label>Empfänger (E-Mail)</label>
+          <input type="email" id="trioBtnMailTo" placeholder="info@example.com">
+        </div>
+        <div>
+          <label>Betreff</label>
+          <input type="text" id="trioBtnMailSubject" placeholder="Anfrage Trio Note à Note">
+        </div>
+        <div>
+          <label>Nachricht (optional)</label>
+          <textarea id="trioBtnMailBody" style="min-height:60px;resize:vertical"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="margin:1.75rem 0 1rem;font-size:1rem;font-weight:600;border-bottom:1px solid var(--border);padding-bottom:0.5rem;">2. Galerie</h3>
+
+    <div id="trioGalleryList" style="display:flex;flex-direction:column;gap:0.35rem;margin-bottom:0.75rem;"></div>
+    <div class="upload-area" id="trioGalleryUploadArea">
+      <strong>Bild hinzufügen</strong> – auswählen oder hierher ziehen &nbsp;·&nbsp; <span style="font-size:0.8em;color:#aaa">wird zu WebP konvertiert</span>
+      <input type="file" id="trioGalleryFileInput" accept="image/*">
+    </div>
+    <div class="upload-status" id="trioGalleryUploadStatus"></div>
+
+    <h3 style="margin:1.75rem 0 1rem;font-size:1rem;font-weight:600;border-bottom:1px solid var(--border);padding-bottom:0.5rem;">3. Video</h3>
+
+    <div class="field">
+      <label>Video-Überschrift</label>
+      <input type="text" id="trioVideoHeading">
+    </div>
+    <div class="field">
+      <label>Video-Beschreibung</label>
+      <div class="rich-toolbar" id="trioVideoToolbar">
+        <button type="button" class="rtb" data-cmd="bold" title="Fett"><b>B</b></button>
+        <button type="button" class="rtb" data-cmd="italic" title="Kursiv"><i>I</i></button>
+        <button type="button" class="rtb" id="trioVideoLinkBtn" title="Link einfügen">A&#x2197;</button>
+        <button type="button" class="rtb" data-cmd="unlink" title="Link entfernen">A&#x00D7;</button>
+      </div>
+      <div class="rich-editor" id="trioVideoEditor" contenteditable="true" style="min-height:80px"></div>
+    </div>
+    <div class="field">
+      <label>Eingebettete Video-URL (YouTube /embed/…)</label>
+      <input type="url" id="trioVideoEmbed" placeholder="https://… (Embed-URL)">
+    </div>
+
+    <h3 style="margin:1.75rem 0 1rem;font-size:1rem;font-weight:600;border-bottom:1px solid var(--border);padding-bottom:0.5rem;">4. Repertoire</h3>
+
+    <div id="trioRepSections"></div>
+
+    <div class="actions">
+      <button class="btn btn--primary" id="saveTrioBtn">Speichern</button>
+      <span class="toast" id="toastTrio"></span>
+    </div>
+
+  </div>
+
+  <!-- Duo Müller-Mazzoletti tab -->
+  <div class="tab-panel" id="tab-duo-mm">
+
+    <h3 style="margin:0 0 1rem;font-size:1rem;font-weight:600;border-bottom:1px solid var(--border);padding-bottom:0.5rem;">1. Intro</h3>
+
+    <div class="field">
+      <label>Intro-Text</label>
+      <div class="rich-toolbar" id="duoIntroToolbar">
+        <button type="button" class="rtb" data-cmd="bold"><b>B</b></button>
+        <button type="button" class="rtb" data-cmd="italic"><i>I</i></button>
+        <button type="button" class="rtb" data-cmd="underline"><u>U</u></button>
+        <button type="button" class="rtb" id="duoIntroLinkBtn" title="Link einfügen">A&#x2197;</button>
+        <button type="button" class="rtb" data-cmd="unlink" title="Link entfernen">A&#x00D7;</button>
+      </div>
+      <div class="rich-editor" id="duoIntroEditor" contenteditable="true" style="min-height:140px"></div>
+    </div>
+    <div class="field">
+      <label>Kontakt-Button Text</label>
+      <input type="text" id="duoBtnText">
+    </div>
+    <div class="field">
+      <label>Kontakt-Button Link</label>
+      <div class="btn-type-toggle">
+        <input type="radio" name="duo-btn-type" id="duo-btn-type-url" value="url" checked>
+        <label for="duo-btn-type-url">URL</label>
+        <input type="radio" name="duo-btn-type" id="duo-btn-type-mail" value="mail">
+        <label for="duo-btn-type-mail">E-Mail</label>
+      </div>
+      <div id="duoBtnUrlWrap" style="margin-top:0.4rem">
+        <input type="text" id="duoBtnHref" placeholder="https://… oder stubs/kontakt.html">
+      </div>
+      <div class="mail-fields" id="duoBtnMailWrap" style="display:none">
+        <div><label>Empfänger (E-Mail)</label><input type="email" id="duoBtnMailTo" placeholder="info@example.com"></div>
+        <div><label>Betreff</label><input type="text" id="duoBtnMailSubject" placeholder="Anfrage Duo Müller-Mazzoletti"></div>
+        <div><label>Nachricht (optional)</label><textarea id="duoBtnMailBody" style="min-height:60px;resize:vertical"></textarea></div>
+      </div>
+    </div>
+
+    <h3 style="margin:1.75rem 0 1rem;font-size:1rem;font-weight:600;border-bottom:1px solid var(--border);padding-bottom:0.5rem;">2. Galerie</h3>
+
+    <div id="duoGalleryList" style="display:flex;flex-direction:column;gap:0.35rem;margin-bottom:0.75rem;"></div>
+    <div class="upload-area" id="duoGalleryUploadArea">
+      <strong>Bild hinzufügen</strong> – auswählen oder hierher ziehen &nbsp;·&nbsp; <span style="font-size:0.8em;color:#aaa">wird zu WebP konvertiert</span>
+      <input type="file" id="duoGalleryFileInput" accept="image/*">
+    </div>
+    <div class="upload-status" id="duoGalleryUploadStatus"></div>
+
+    <h3 style="margin:1.75rem 0 1rem;font-size:1rem;font-weight:600;border-bottom:1px solid var(--border);padding-bottom:0.5rem;">3. Video</h3>
+
+    <div class="field">
+      <label>Video-Überschrift</label>
+      <input type="text" id="duoVideoHeading">
+    </div>
+    <div class="field">
+      <label>Video-Beschreibung</label>
+      <div class="rich-toolbar" id="duoVideoToolbar">
+        <button type="button" class="rtb" data-cmd="bold"><b>B</b></button>
+        <button type="button" class="rtb" data-cmd="italic"><i>I</i></button>
+        <button type="button" class="rtb" id="duoVideoLinkBtn" title="Link einfügen">A&#x2197;</button>
+        <button type="button" class="rtb" data-cmd="unlink">A&#x00D7;</button>
+      </div>
+      <div class="rich-editor" id="duoVideoEditor" contenteditable="true" style="min-height:80px"></div>
+    </div>
+    <div class="field">
+      <label>Eingebettete Video-URL (YouTube /embed/…)</label>
+      <input type="url" id="duoVideoEmbed" placeholder="https://… (Embed-URL)">
+    </div>
+
+    <h3 style="margin:1.75rem 0 1rem;font-size:1rem;font-weight:600;border-bottom:1px solid var(--border);padding-bottom:0.5rem;">4. Repertoire</h3>
+
+    <p class="rep-hint">Einträge hinzufügen oder entfernen.</p>
+    <ul id="duoRepList" style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px;margin-bottom:0.5rem;"></ul>
+    <button class="btn btn--secondary btn--sm" id="addDuoRepBtn">+ Eintrag hinzufügen</button>
+
+    <div class="actions">
+      <button class="btn btn--primary" id="saveDuoBtn">Speichern</button>
+      <span class="toast" id="toastDuo"></span>
+    </div>
+
+  </div>
+
+  <!-- Duo DieDa tab -->
+  <div class="tab-panel" id="tab-duo-dieda">
+
+    <h3 style="margin:0 0 1rem;font-size:1rem;font-weight:600;border-bottom:1px solid var(--border);padding-bottom:0.5rem;">1. Intro</h3>
+
+    <div class="field">
+      <label>Intro-Text</label>
+      <div class="rich-toolbar" id="diedaIntroToolbar">
+        <button type="button" class="rtb" data-cmd="bold"><b>B</b></button>
+        <button type="button" class="rtb" data-cmd="italic"><i>I</i></button>
+        <button type="button" class="rtb" data-cmd="underline"><u>U</u></button>
+        <button type="button" class="rtb" id="diedaIntroLinkBtn" title="Link einfügen">A&#x2197;</button>
+        <button type="button" class="rtb" data-cmd="unlink" title="Link entfernen">A&#x00D7;</button>
+      </div>
+      <div class="rich-editor" id="diedaIntroEditor" contenteditable="true" style="min-height:140px"></div>
+    </div>
+    <div class="field">
+      <label>Kontakt-Button Text</label>
+      <input type="text" id="diedaBtnText">
+    </div>
+    <div class="field">
+      <label>Kontakt-Button Link</label>
+      <div class="btn-type-toggle">
+        <input type="radio" name="dieda-btn-type" id="dieda-btn-type-url" value="url">
+        <label for="dieda-btn-type-url">URL</label>
+        <input type="radio" name="dieda-btn-type" id="dieda-btn-type-mail" value="mail" checked>
+        <label for="dieda-btn-type-mail">E-Mail</label>
+      </div>
+      <div id="diedaBtnUrlWrap" style="display:none;margin-top:0.4rem">
+        <input type="text" id="diedaBtnHref" placeholder="https://… oder stubs/kontakt.html">
+      </div>
+      <div class="mail-fields" id="diedaBtnMailWrap" style="margin-top:0.4rem">
+        <div><label>Empfänger (E-Mail)</label><input type="email" id="diedaBtnMailTo" placeholder="info@example.com"></div>
+        <div><label>Betreff</label><input type="text" id="diedaBtnMailSubject" placeholder="Anfrage Duo DieDa"></div>
+        <div><label>Nachricht (optional)</label><textarea id="diedaBtnMailBody" style="min-height:60px;resize:vertical"></textarea></div>
+      </div>
+    </div>
+
+    <h3 style="margin:1.75rem 0 1rem;font-size:1rem;font-weight:600;border-bottom:1px solid var(--border);padding-bottom:0.5rem;">2. Galerie</h3>
+
+    <div id="diedaGalleryList" style="display:flex;flex-direction:column;gap:0.35rem;margin-bottom:0.75rem;"></div>
+    <div class="upload-area" id="diedaGalleryUploadArea">
+      <strong>Bild hinzufügen</strong> – auswählen oder hierher ziehen &nbsp;·&nbsp; <span style="font-size:0.8em;color:#aaa">wird zu WebP konvertiert</span>
+      <input type="file" id="diedaGalleryFileInput" accept="image/*">
+    </div>
+    <div class="upload-status" id="diedaGalleryUploadStatus"></div>
+
+    <h3 style="margin:1.75rem 0 1rem;font-size:1rem;font-weight:600;border-bottom:1px solid var(--border);padding-bottom:0.5rem;">3. Video</h3>
+
+    <div class="field">
+      <label>Video-Überschrift</label>
+      <input type="text" id="diedaVideoHeading">
+    </div>
+    <div class="field">
+      <label>Video-Beschreibung</label>
+      <div class="rich-toolbar" id="diedaVideoToolbar">
+        <button type="button" class="rtb" data-cmd="bold"><b>B</b></button>
+        <button type="button" class="rtb" data-cmd="italic"><i>I</i></button>
+        <button type="button" class="rtb" id="diedaVideoLinkBtn" title="Link einfügen">A&#x2197;</button>
+        <button type="button" class="rtb" data-cmd="unlink">A&#x00D7;</button>
+      </div>
+      <div class="rich-editor" id="diedaVideoEditor" contenteditable="true" style="min-height:80px"></div>
+    </div>
+    <div class="field">
+      <label>Eingebettete Video-URL (YouTube /embed/…)</label>
+      <input type="url" id="diedaVideoEmbed" placeholder="https://… (Embed-URL)">
+    </div>
+
+    <h3 style="margin:1.75rem 0 1rem;font-size:1rem;font-weight:600;border-bottom:1px solid var(--border);padding-bottom:0.5rem;">4. Repertoire</h3>
+
+    <p class="rep-hint">Einträge hinzufügen oder entfernen.</p>
+    <ul id="diedaRepList" style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px;margin-bottom:0.5rem;"></ul>
+    <button class="btn btn--secondary btn--sm" id="addDiedaRepBtn">+ Eintrag hinzufügen</button>
+
+    <div class="actions">
+      <button class="btn btn--primary" id="saveDiedaBtn">Speichern</button>
+      <span class="toast" id="toastDieda"></span>
+    </div>
+
+  </div>
+
+  <!-- Konzertarchiv tab -->
+  <div class="tab-panel" id="tab-archiv">
+
+    <div style="margin-bottom:1rem;">
+      <button class="btn btn--secondary" id="addArchivYearBtn">+ Jahr hinzufügen</button>
+    </div>
+
+    <div id="archivYearSections"></div>
+
+    <div class="actions">
+      <button class="btn btn--primary" id="saveArchivBtn">Speichern</button>
+      <span class="toast" id="toastArchiv"></span>
+    </div>
+
+  </div>
+
+  <!-- KiK tab -->
+  <div class="tab-panel" id="tab-kik">
+
+    <div class="field">
+      <label>Text</label>
+      <div class="rich-toolbar" id="kikToolbar">
+        <button type="button" class="rtb" data-cmd="bold"><b>B</b></button>
+        <button type="button" class="rtb" data-cmd="italic"><i>I</i></button>
+        <button type="button" class="rtb" data-cmd="underline"><u>U</u></button>
+        <button type="button" class="rtb" id="kikLinkBtn" title="Link einfügen">A&#x2197;</button>
+        <button type="button" class="rtb" data-cmd="unlink" title="Link entfernen">A&#x00D7;</button>
+      </div>
+      <div class="rich-editor" id="kikEditor" contenteditable="true" style="min-height:160px"></div>
+    </div>
+
+    <div class="field">
+      <label>Logo-Link (URL)</label>
+      <input type="url" id="kikLogoHref" placeholder="https://kikonzerte.ch">
+    </div>
+
+    <h3 style="margin:1.75rem 0 1rem;font-size:1rem;font-weight:600;border-bottom:1px solid var(--border);padding-bottom:0.5rem;">Logo</h3>
+
+    <div id="kikLogoPreview" style="margin-bottom:0.75rem;"></div>
+    <div class="upload-area" id="kikLogoUploadArea">
+      <strong>Logo ersetzen</strong> – auswählen oder hierher ziehen &nbsp;·&nbsp; <span style="font-size:0.8em;color:#aaa">wird zu WebP konvertiert</span>
+      <input type="file" id="kikLogoFileInput" accept="image/*">
+    </div>
+    <div class="upload-status" id="kikLogoUploadStatus"></div>
+
+    <div class="actions">
+      <button class="btn btn--primary" id="saveKikBtn">Speichern</button>
+      <span class="toast" id="toastKik"></span>
+    </div>
+
+  </div>
+
+  <!-- Video tab -->
+  <div class="tab-panel" id="tab-video">
+
+    <h3 style="margin:0 0 1rem;font-size:1rem;font-weight:600;border-bottom:1px solid var(--border);padding-bottom:0.5rem;">Seiten-Einstellungen</h3>
+
+    <div class="field">
+      <label>Überschrift</label>
+      <input type="text" id="videoHeadingInput">
+    </div>
+    <div class="field">
+      <label>Beschreibungstext</label>
+      <div class="rich-toolbar" id="videoDescToolbar">
+        <button type="button" class="rtb" data-cmd="bold"><b>B</b></button>
+        <button type="button" class="rtb" data-cmd="italic"><i>I</i></button>
+        <button type="button" class="rtb" id="videoDescLinkBtn" title="Link einfügen">A&#x2197;</button>
+        <button type="button" class="rtb" data-cmd="unlink">A&#x00D7;</button>
+      </div>
+      <div class="rich-editor" id="videoDescEditor" contenteditable="true" style="min-height:80px"></div>
+    </div>
+
+    <h3 style="margin:1.75rem 0 1rem;font-size:1rem;font-weight:600;border-bottom:1px solid var(--border);padding-bottom:0.5rem;">Videos</h3>
+
+    <div id="videoList" style="display:flex;flex-direction:column;gap:0.75rem;margin-bottom:0.75rem;"></div>
+    <button class="btn btn--secondary btn--sm" id="addVideoBtn">+ Video hinzufügen</button>
+
+    <div class="actions">
+      <button class="btn btn--primary" id="saveVideoBtn">Speichern</button>
+      <span class="toast" id="toastVideo"></span>
+    </div>
+
+  </div>
+
+  <!-- Kontakt tab -->
+  <div class="tab-panel" id="tab-kontakt">
+    <div class="field">
+      <label>Beschreibungstext</label>
+      <textarea id="kontaktText" style="min-height:70px;resize:vertical"></textarea>
+    </div>
+    <div class="field">
+      <label>E-Mail-Adresse</label>
+      <input type="email" id="kontaktEmail" placeholder="info@example.com">
+    </div>
+    <div class="field">
+      <label>Button-Text</label>
+      <input type="text" id="kontaktLabel" placeholder="Kontakt aufnehmen">
+    </div>
+    <div class="actions">
+      <button class="btn btn--primary" id="saveKontaktBtn">Speichern</button>
+      <span class="toast" id="toastKontakt"></span>
+    </div>
+  </div>
+
+</main>
+
+<!-- Link insert modal -->
+<div id="linkModal" style="display:none;position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,0.4);align-items:center;justify-content:center;">
+  <div style="background:#fff;border-radius:8px;padding:1.5rem;width:360px;max-width:90vw;box-shadow:0 8px 32px rgba(0,0,0,0.2);" onclick="event.stopPropagation()">
+    <h3 style="margin:0 0 1rem;font-size:1rem;font-weight:600;">Link einfügen</h3>
+    <div class="field">
+      <label for="linkModalUrl">URL</label>
+      <input type="url" id="linkModalUrl" placeholder="https://…">
+    </div>
+    <label style="display:flex;align-items:center;gap:0.5rem;margin:0.5rem 0 1.25rem;cursor:pointer;font-size:0.9rem;font-weight:400;text-transform:none;letter-spacing:0;color:var(--text);">
+      <input type="checkbox" id="linkModalNewTab" style="width:auto;margin:0;" checked>
+      In neuem Tab öffnen
+    </label>
+    <div style="display:flex;justify-content:flex-end;gap:0.5rem;">
+      <button type="button" class="btn btn--secondary" id="linkModalCancel">Abbrechen</button>
+      <button type="button" class="btn btn--primary" id="linkModalOk">Einfügen</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ===== Tabs ===== */
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const target = btn.dataset.tab;
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + target).classList.add('active');
+  });
+});
+
+/* ===== Events ===== */
+let events = [];
+
+async function loadEvents() {
+  try {
+    const res = await fetch('/api/events');
+    const json = await res.json();
+    events = json.events || [];
+    renderEvents();
+  } catch (err) { showToast('toastEvents', 'Fehler: ' + err.message, 'error'); }
+}
+
+function renderEvents() {
+  const list = document.getElementById('eventsList');
+  list.innerHTML = '';
+  events.forEach((ev, i) => list.appendChild(renderEventCard(ev, i)));
+}
+
+/* ===== Date formatting helpers ===== */
+const DAYS_DE = ['So','Mo','Di','Mi','Do','Fr','Sa'];
+
+function formatFromParts(day, month, year, hour, minute) {
+  // all strings/numbers → "Sa, 30.05.26, 19:00"
+  if (!day || !month || !year || String(year).length < 4) return '';
+  const p = n => String(n).padStart(2, '0');
+  const d = new Date(+year, +month - 1, +day);
+  if (isNaN(d)) return '';
+  return `${DAYS_DE[d.getDay()]}, ${p(+day)}.${p(+month)}.${p(+year % 100)}, ${p(+hour || 0)}:${p(+minute || 0)}`;
+}
+
+function parseDateParts(str) {
+  // "Sa, 30.05.26, 19:00" → { day, month, year (4-digit), hour, minute }
+  const m = str && str.match(/(\d{2})\.(\d{2})\.(\d{2}),?\s*(\d{2}):(\d{2})/);
+  if (!m) return { day: '', month: '', year: '', hour: '17', minute: '00' };
+  return { day: m[1], month: m[2], year: '20' + m[3], hour: m[4], minute: m[5] };
+}
+
+/* ===== Date/location entries ===== */
+function makeDatesField(ev, i) {
+  if (!events[i].dates) events[i].dates = [];
+
+  const wrap = document.createElement('div');
+  wrap.className = 'field';
+
+  const lbl = document.createElement('label');
+  lbl.textContent = 'Termine & Orte';
+  wrap.appendChild(lbl);
+
+  const list = document.createElement('div');
+  list.className = 'dates-list';
+  wrap.appendChild(list);
+
+  function renderList() {
+    list.innerHTML = '';
+    events[i].dates.forEach((d, j) => {
+      const row = document.createElement('div');
+      row.className = 'date-entry';
+
+      const parts = parseDateParts(d.date);
+
+      function mkPart(datap, placeholder, value, maxLen) {
+        const inp = document.createElement('input');
+        inp.type = 'text';
+        inp.inputMode = 'numeric';
+        inp.dataset.p = datap;
+        inp.placeholder = placeholder;
+        inp.value = value;
+        inp.maxLength = maxLen;
+        return inp;
+      }
+      function mkSep(ch) {
+        const s = document.createElement('span');
+        s.className = 'sep';
+        s.textContent = ch;
+        return s;
+      }
+
+      const dayInp = mkPart('d',  'TT',   parts.day,    2);
+      const monInp = mkPart('mo', 'MM',   parts.month,  2);
+      const yrInp  = mkPart('y',  'JJJJ', parts.year,   4);
+      const hrInp  = mkPart('h',  'HH',   parts.hour,   2);
+      const minInp = mkPart('mi', 'MM',   parts.minute, 2);
+
+      const dateGroup = document.createElement('div');
+      dateGroup.className = 'date-parts';
+      dateGroup.append(dayInp, mkSep('.'), monInp, mkSep('.'), yrInp);
+
+      const timeGroup = document.createElement('div');
+      timeGroup.className = 'date-parts';
+      timeGroup.append(hrInp, mkSep(':'), minInp);
+
+      function syncDate() {
+        events[i].dates[j].date = formatFromParts(dayInp.value, monInp.value, yrInp.value, hrInp.value, minInp.value);
+      }
+      [dayInp, monInp, yrInp, hrInp, minInp].forEach(inp => inp.addEventListener('input', syncDate));
+
+      const locInput = document.createElement('input');
+      locInput.type = 'text';
+      locInput.placeholder = 'Ort, Adresse';
+      locInput.value = d.location || '';
+      locInput.addEventListener('input', () => { events[i].dates[j].location = locInput.value; });
+
+      const upBtn = document.createElement('button');
+      upBtn.type = 'button'; upBtn.className = 'btn btn--secondary btn--icon'; upBtn.textContent = '▲'; upBtn.disabled = j === 0;
+      upBtn.addEventListener('click', () => { [events[i].dates[j-1], events[i].dates[j]] = [events[i].dates[j], events[i].dates[j-1]]; renderList(); });
+
+      const dnBtn = document.createElement('button');
+      dnBtn.type = 'button'; dnBtn.className = 'btn btn--secondary btn--icon'; dnBtn.textContent = '▼'; dnBtn.disabled = j === events[i].dates.length - 1;
+      dnBtn.addEventListener('click', () => { [events[i].dates[j], events[i].dates[j+1]] = [events[i].dates[j+1], events[i].dates[j]]; renderList(); });
+
+      const removeBtn = document.createElement('button');
+      removeBtn.type = 'button';
+      removeBtn.className = 'btn btn--danger btn--icon';
+      removeBtn.textContent = '×';
+      removeBtn.addEventListener('click', () => { events[i].dates.splice(j, 1); renderList(); });
+
+      row.append(dateGroup, timeGroup, locInput, upBtn, dnBtn, removeBtn);
+      list.appendChild(row);
+    });
+  }
+
+  renderList();
+
+  const addBtn = document.createElement('button');
+  addBtn.type = 'button';
+  addBtn.className = 'btn btn--secondary btn--sm';
+  addBtn.textContent = '+ Termin hinzufügen';
+  addBtn.style.marginTop = '0.25rem';
+  addBtn.addEventListener('click', () => { events[i].dates.push({ date: '', location: '' }); renderList(); });
+  wrap.appendChild(addBtn);
+
+  return wrap;
+}
+
+/* ===== Rich text editor ===== */
+function makeRichEditor(ev, i) {
+  const wrap = document.createElement('div');
+  wrap.className = 'field';
+
+  const lbl = document.createElement('label');
+  lbl.textContent = 'Beschreibung';
+  wrap.appendChild(lbl);
+
+  const toolbar = document.createElement('div');
+  toolbar.className = 'rich-toolbar';
+  [['bold','<b>B</b>','Fett (Ctrl+B)'],['italic','<i>I</i>','Kursiv (Ctrl+I)'],['underline','<u>U</u>','Unterstrichen (Ctrl+U)']].forEach(([cmd, html, title]) => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'rtb';
+    btn.innerHTML = html;
+    btn.title = title;
+    btn.addEventListener('mousedown', e => {
+      e.preventDefault();
+      document.execCommand(cmd, false, null);
+      editor.focus();
+    });
+    toolbar.appendChild(btn);
+  });
+  // Link button
+  const evLinkBtn = document.createElement('button');
+  evLinkBtn.type = 'button';
+  evLinkBtn.className = 'rtb';
+  evLinkBtn.innerHTML = 'A&#x2197;';
+  evLinkBtn.title = 'Link einfügen';
+  evLinkBtn.addEventListener('mousedown', e => {
+    e.preventDefault();
+    const sel = window.getSelection();
+    const range = sel.rangeCount ? sel.getRangeAt(0).cloneRange() : null;
+    showLinkDialog(range, editor, (url, newTab) => {
+      applyLink(editor, range, url, newTab);
+      events[i].description = editor.innerHTML;
+    });
+  });
+  toolbar.appendChild(evLinkBtn);
+  // Unlink button
+  const evUnlinkBtn = document.createElement('button');
+  evUnlinkBtn.type = 'button';
+  evUnlinkBtn.className = 'rtb';
+  evUnlinkBtn.innerHTML = 'A&#x00D7;';
+  evUnlinkBtn.title = 'Link entfernen';
+  evUnlinkBtn.addEventListener('mousedown', e => {
+    e.preventDefault();
+    document.execCommand('unlink', false, null);
+    editor.focus();
+    events[i].description = editor.innerHTML;
+  });
+  toolbar.appendChild(evUnlinkBtn);
+  wrap.appendChild(toolbar);
+
+  const editor = document.createElement('div');
+  editor.className = 'rich-editor';
+  editor.contentEditable = 'true';
+  editor.innerHTML = ev.description || '<p></p>';
+
+  editor.addEventListener('focus', () => {
+    document.execCommand('defaultParagraphSeparator', false, 'p');
+  });
+  editor.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); document.execCommand('insertParagraph', false, null); }
+    if (e.key === 'Enter' && e.shiftKey)  { e.preventDefault(); document.execCommand('insertLineBreak', false, null); }
+  });
+  editor.addEventListener('input', () => { events[i].description = editor.innerHTML; });
+  editor.addEventListener('paste', e => {
+    e.preventDefault();
+    document.execCommand('insertText', false, e.clipboardData.getData('text/plain'));
+  });
+
+  wrap.appendChild(editor);
+  return wrap;
+}
+
+/* ===== Image field helpers ===== */
+function getPreviewSrc(imageUrl) {
+  if (!imageUrl) return '';
+  return '/' + imageUrl;
+}
+
+function makeImageField(ev, i) {
+  const wrap = document.createElement('div');
+  wrap.className = 'field';
+
+  const lbl = document.createElement('label');
+  lbl.textContent = 'Konzertbild';
+  wrap.appendChild(lbl);
+
+  // Current image preview
+  const currentWrap = document.createElement('div');
+  currentWrap.className = 'image-current';
+  currentWrap.style.display = ev.imageUrl ? 'flex' : 'none';
+
+  const img = document.createElement('img');
+  img.src = getPreviewSrc(ev.imageUrl);
+  img.alt = '';
+  currentWrap.appendChild(img);
+
+  const info = document.createElement('div');
+  info.className = 'image-current-info';
+
+  const pathSpan = document.createElement('span');
+  pathSpan.className = 'image-current-path';
+  pathSpan.textContent = ev.imageUrl || '';
+  info.appendChild(pathSpan);
+
+  currentWrap.appendChild(info);
+  wrap.appendChild(currentWrap);
+
+  // Upload area
+  const uploadArea = document.createElement('div');
+  uploadArea.className = 'upload-area';
+  uploadArea.innerHTML = '<strong>Bild auswählen</strong> oder hierher ziehen &nbsp;·&nbsp; <span style="font-size:0.8em;color:#aaa">wird automatisch zu WebP konvertiert</span>';
+
+  const fileInput = document.createElement('input');
+  fileInput.type = 'file';
+  fileInput.accept = 'image/*';
+  uploadArea.appendChild(fileInput);
+
+  uploadArea.addEventListener('dragover', e => { e.preventDefault(); uploadArea.classList.add('drag-over'); });
+  uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('drag-over'));
+  uploadArea.addEventListener('drop', e => {
+    e.preventDefault();
+    uploadArea.classList.remove('drag-over');
+    if (e.dataTransfer.files[0]) {
+      fileInput.files = e.dataTransfer.files;
+      fileInput.dispatchEvent(new Event('change'));
+    }
+  });
+
+  fileInput.addEventListener('change', async () => {
+    const file = fileInput.files[0];
+    if (!file) return;
+    statusDiv.textContent = 'Wird hochgeladen…';
+    statusDiv.className = 'upload-status';
+    fileInput.disabled = true;
+    try {
+      const b64 = await fileToBase64(file);
+      const res = await fetch('/api/upload-image', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ imageBase64: b64, eventId: events[i].id })
+      });
+      const data = await res.json();
+      if (!data.ok) throw new Error(data.error);
+      events[i].imageUrl = data.imagePath;
+      img.src = '/' + data.imagePath;
+      pathSpan.textContent = data.imagePath;
+      currentWrap.style.display = 'flex';
+      statusDiv.textContent = 'Gespeichert: ' + data.imagePath;
+    } catch (err) {
+      statusDiv.textContent = 'Fehler: ' + err.message;
+      statusDiv.className = 'upload-status err';
+    } finally {
+      fileInput.disabled = false;
+      fileInput.value = '';
+    }
+  });
+
+  wrap.appendChild(uploadArea);
+
+  const statusDiv = document.createElement('div');
+  statusDiv.className = 'upload-status';
+  wrap.appendChild(statusDiv);
+
+  return wrap;
+}
+
+/* ===== Button link field ===== */
+function parseMailto(href) {
+  if (!href || !href.startsWith('mailto:')) return { to: '', subject: '', body: '' };
+  const rest = href.slice(7);
+  const qIdx = rest.indexOf('?');
+  const to = decodeURIComponent(qIdx >= 0 ? rest.slice(0, qIdx) : rest);
+  const params = {};
+  if (qIdx >= 0) {
+    rest.slice(qIdx + 1).split('&').forEach(part => {
+      const eq = part.indexOf('=');
+      if (eq >= 0) {
+        const k = decodeURIComponent(part.slice(0, eq));
+        const v = decodeURIComponent(part.slice(eq + 1).replace(/\+/g, ' '));
+        params[k.toLowerCase()] = v;
+      }
+    });
+  }
+  return { to, subject: params.subject || '', body: params.body || '' };
+}
+
+function buildMailto(to, subject, body) {
+  if (!to) return 'mailto:';
+  let href = 'mailto:' + to;
+  const parts = [];
+  if (subject) parts.push('subject=' + encodeURIComponent(subject));
+  if (body) parts.push('body=' + encodeURIComponent(body));
+  if (parts.length) href += '?' + parts.join('&');
+  return href;
+}
+
+function makeButtonField(ev, i) {
+  const wrap = document.createElement('div');
+  wrap.className = 'field';
+
+  const row = document.createElement('div');
+  row.className = 'field-row';
+  wrap.appendChild(row);
+
+  // Button text
+  const textField = document.createElement('div');
+  textField.className = 'field';
+  const textLbl = document.createElement('label');
+  textLbl.textContent = 'Button-Text';
+  textField.appendChild(textLbl);
+  const textInput = document.createElement('input');
+  textInput.type = 'text';
+  textInput.value = ev.button.text || '';
+  textInput.addEventListener('input', () => { events[i].button.text = textInput.value; });
+  textField.appendChild(textInput);
+  row.appendChild(textField);
+
+  // New tab checkbox
+  const ntField = document.createElement('div');
+  ntField.className = 'field';
+  const ntLbl = document.createElement('label');
+  ntLbl.style.cursor = 'pointer';
+  const ntCb = document.createElement('input');
+  ntCb.type = 'checkbox';
+  ntCb.checked = !!ev.button.newTab;
+  ntCb.style.cssText = 'width:auto;margin-right:0.4em;vertical-align:middle;';
+  ntCb.addEventListener('change', () => { events[i].button.newTab = ntCb.checked; });
+  ntLbl.appendChild(ntCb);
+  ntLbl.appendChild(document.createTextNode('In neuem Tab öffnen'));
+  ntField.appendChild(document.createElement('label'));
+  ntField.firstChild.textContent = ' ';
+  ntField.appendChild(ntLbl);
+  row.appendChild(ntField);
+
+  // Link type toggle
+  const isMailto = (ev.button.href || '').startsWith('mailto:');
+  const uid = 'btn-type-' + i;
+
+  const toggleWrap = document.createElement('div');
+  toggleWrap.className = 'field';
+  const toggleLbl = document.createElement('label');
+  toggleLbl.textContent = 'Button-Link';
+  toggleWrap.appendChild(toggleLbl);
+
+  const toggle = document.createElement('div');
+  toggle.className = 'btn-type-toggle';
+  toggle.innerHTML = `
+    <input type="radio" name="${uid}" id="${uid}-url" value="url" ${!isMailto ? 'checked' : ''}>
+    <label for="${uid}-url">URL</label>
+    <input type="radio" name="${uid}" id="${uid}-mail" value="mail" ${isMailto ? 'checked' : ''}>
+    <label for="${uid}-mail">E-Mail</label>`;
+  toggleWrap.appendChild(toggle);
+
+  // URL input
+  const urlWrap = document.createElement('div');
+  urlWrap.style.display = isMailto ? 'none' : '';
+  urlWrap.style.marginTop = '0.4rem';
+  const urlInput = document.createElement('input');
+  urlInput.type = 'text';
+  urlInput.placeholder = 'https://…';
+  urlInput.value = isMailto ? '' : (ev.button.href || '');
+  urlInput.addEventListener('input', () => { events[i].button.href = urlInput.value; });
+  urlWrap.appendChild(urlInput);
+  toggleWrap.appendChild(urlWrap);
+
+  // Email fields
+  const parsed = parseMailto(ev.button.href);
+  const mailWrap = document.createElement('div');
+  mailWrap.className = 'mail-fields';
+  mailWrap.style.display = isMailto ? '' : 'none';
+
+  function mkMailField(labelText, inputType, value, placeholder) {
+    const f = document.createElement('div');
+    const l = document.createElement('label');
+    l.textContent = labelText;
+    f.appendChild(l);
+    const inp = document.createElement(inputType === 'textarea' ? 'textarea' : 'input');
+    if (inputType !== 'textarea') inp.type = inputType;
+    else { inp.style.minHeight = '60px'; inp.style.resize = 'vertical'; }
+    inp.value = value;
+    inp.placeholder = placeholder || '';
+    f.appendChild(inp);
+    return { f, inp };
+  }
+
+  const { f: toF, inp: toInp } = mkMailField('Empfänger (E-Mail)', 'email', parsed.to, 'info@example.com');
+  const { f: subF, inp: subInp } = mkMailField('Betreff', 'text', parsed.subject, 'Anmeldung Konzert');
+  const { f: bodyF, inp: bodyInp } = mkMailField('Nachricht (optional)', 'textarea', parsed.body, '');
+
+  function syncMailto() {
+    events[i].button.href = buildMailto(toInp.value.trim(), subInp.value.trim(), bodyInp.value.trim());
+  }
+  toInp.addEventListener('input', syncMailto);
+  subInp.addEventListener('input', syncMailto);
+  bodyInp.addEventListener('input', syncMailto);
+
+  mailWrap.appendChild(toF);
+  mailWrap.appendChild(subF);
+  mailWrap.appendChild(bodyF);
+  toggleWrap.appendChild(mailWrap);
+
+  // Toggle behavior
+  toggle.querySelectorAll('input[type="radio"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+      const isMail = radio.value === 'mail';
+      urlWrap.style.display = isMail ? 'none' : '';
+      mailWrap.style.display = isMail ? '' : 'none';
+      if (!isMail) {
+        events[i].button.href = urlInput.value;
+      } else {
+        syncMailto();
+      }
+    });
+  });
+
+  wrap.appendChild(toggleWrap);
+  return wrap;
+}
+
+/* ===== Render event card ===== */
+function renderEventCard(ev, i) {
+  const card = document.createElement('div');
+  card.className = 'event-card';
+
+  // Header
+  card.innerHTML = `
+    <div class="event-card__header">
+      <strong>Konzert ${i + 1}</strong>
+      <div class="event-card__order">
+        <button class="btn btn--secondary btn--sm" data-move="-1" ${i === 0 ? 'disabled' : ''}>▲</button>
+        <button class="btn btn--secondary btn--sm" data-move="1" ${i === events.length - 1 ? 'disabled' : ''}>▼</button>
+        <button class="btn btn--danger btn--sm" data-delete>Löschen</button>
+      </div>
+    </div>`;
+
+  // Title
+  const titleWrap = document.createElement('div');
+  titleWrap.className = 'field';
+  titleWrap.innerHTML = '<label>Titel</label>';
+  const titleInput = document.createElement('input');
+  titleInput.type = 'text';
+  titleInput.value = ev.title || '';
+  titleInput.addEventListener('input', () => { events[i].title = titleInput.value; });
+  titleWrap.appendChild(titleInput);
+  card.appendChild(titleWrap);
+
+  // Date/location entries
+  card.appendChild(makeDatesField(ev, i));
+
+  // Rich text description
+  card.appendChild(makeRichEditor(ev, i));
+
+  // Image field
+  card.appendChild(makeImageField(ev, i));
+
+  // Alt text
+  const altWrap = document.createElement('div');
+  altWrap.className = 'field';
+  altWrap.innerHTML = '<label>Bild Alt-Text</label>';
+  const altInput = document.createElement('input');
+  altInput.type = 'text';
+  altInput.value = ev.imageAlt || '';
+  altInput.addEventListener('input', () => { events[i].imageAlt = altInput.value; });
+  altWrap.appendChild(altInput);
+  card.appendChild(altWrap);
+
+  // Button field (text + link type)
+  card.appendChild(makeButtonField(ev, i));
+
+  // Order / delete handlers
+  card.querySelector('[data-move="-1"]')?.addEventListener('click', () => {
+    [events[i-1], events[i]] = [events[i], events[i-1]]; renderEvents();
+  });
+  card.querySelector('[data-move="1"]')?.addEventListener('click', () => {
+    [events[i], events[i+1]] = [events[i+1], events[i]]; renderEvents();
+  });
+  card.querySelector('[data-delete]').addEventListener('click', () => {
+    if (confirm(`Konzert "${ev.title || 'Unbenannt'}" wirklich löschen?`)) { events.splice(i, 1); renderEvents(); }
+  });
+
+  return card;
+}
+
+document.getElementById('addBtn').addEventListener('click', () => {
+  events.push({
+    id: 'konzert-' + Date.now(),
+    title: '',
+    dates: [{ date: '', location: '' }],
+    description: '<p></p>',
+    imageUrl: '',
+    imageAlt: '',
+    button: { text: 'Anmelden', href: '', newTab: false }
+  });
+  renderEvents();
+  document.getElementById('eventsList').lastElementChild?.scrollIntoView({ behavior: 'smooth' });
+});
+
+document.getElementById('saveEventsBtn').addEventListener('click', async () => {
+  try {
+    const res = await fetch('/api/events', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ events })
+    });
+    if (!res.ok) throw new Error((await res.json()).error || res.statusText);
+    showToast('toastEvents', 'Gespeichert!', 'success');
+  } catch (err) { showToast('toastEvents', 'Fehler: ' + err.message, 'error'); }
+});
+
+/* ===== Repertoire ===== */
+let repItems = [];
+
+async function loadRepertoire() {
+  try {
+    const res = await fetch('/api/repertoire');
+    const data = await res.json();
+    repItems = data.items || [];
+    renderRepertoire();
+  } catch (err) { showToast('toastRep', 'Fehler: ' + err.message, 'error'); }
+}
+
+function renderRepertoire() {
+  const ul = document.getElementById('repList');
+  ul.innerHTML = '';
+  repItems.forEach((item, i) => {
+    const li = document.createElement('li');
+    li.className = 'rep-row';
+    li.draggable = true;
+    li.dataset.idx = i;
+    li.innerHTML = `
+      <span class="rep-row__handle" aria-hidden="true">⠿</span>
+      <input type="text" value="${ea(item)}" aria-label="Eintrag ${i + 1}">
+      <button class="btn btn--danger btn--sm" aria-label="Löschen">×</button>`;
+    li.querySelector('input').addEventListener('input', e => { repItems[i] = e.target.value; });
+    li.querySelector('button').addEventListener('click', () => { repItems.splice(i, 1); renderRepertoire(); });
+    li.addEventListener('dragstart', onDragStart);
+    li.addEventListener('dragend', onDragEnd);
+    ul.appendChild(li);
+  });
+}
+
+// dragover + drop on the UL so gaps between rows (where no row fires events) still work.
+let dragSrcIdx = null;
+let dropPos = null; // { targetIdx, before } — set by dragover, consumed by drop
+
+(function initRepDnd() {
+  const ul = document.getElementById('repList');
+  ul.addEventListener('dragover', e => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    dropPos = computeDropPos(e.clientY);
+    clearDropIndicators();
+    if (dropPos) showDropIndicator(dropPos);
+  });
+  ul.addEventListener('drop', e => {
+    e.preventDefault();
+    clearDropIndicators();
+    if (!dropPos || dropPos.targetIdx === dragSrcIdx) { dropPos = null; return; }
+    const { targetIdx, before } = dropPos;
+    dropPos = null;
+    const [moved] = repItems.splice(dragSrcIdx, 1);
+    let insertIdx = dragSrcIdx < targetIdx ? targetIdx - 1 : targetIdx;
+    if (!before) insertIdx++;
+    repItems.splice(insertIdx, 0, moved);
+    renderRepertoire();
+  });
+})();
+
+function makeRepDnd(ulEl, getItems, rerender) {
+  let dndSrcIdx = null;
+  let dndDropPos = null;
+
+  function clearInd() {
+    ulEl.querySelectorAll('.rep-row').forEach(r => r.classList.remove('drop-above', 'drop-below'));
+  }
+  function computePos(clientY) {
+    const rows = [...ulEl.querySelectorAll('.rep-row')];
+    for (const row of rows) {
+      const idx = +row.dataset.idx;
+      if (idx === dndSrcIdx) continue;
+      const rect = row.getBoundingClientRect();
+      if (clientY < rect.bottom) return { targetIdx: idx, before: clientY < rect.top + rect.height / 2 };
+    }
+    const last = rows.filter(r => +r.dataset.idx !== dndSrcIdx).pop();
+    return last ? { targetIdx: +last.dataset.idx, before: false } : null;
+  }
+  function showInd({ targetIdx, before }) {
+    const row = ulEl.querySelector(`.rep-row[data-idx="${targetIdx}"]`);
+    if (row) row.classList.add(before ? 'drop-above' : 'drop-below');
+  }
+
+  ulEl.addEventListener('dragover', e => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    dndDropPos = computePos(e.clientY);
+    clearInd();
+    if (dndDropPos) showInd(dndDropPos);
+  });
+  ulEl.addEventListener('dragleave', e => { if (!ulEl.contains(e.relatedTarget)) clearInd(); });
+  ulEl.addEventListener('drop', e => {
+    e.preventDefault();
+    clearInd();
+    if (!dndDropPos || dndDropPos.targetIdx === dndSrcIdx) { dndDropPos = null; return; }
+    const { targetIdx, before } = dndDropPos;
+    dndDropPos = null;
+    const items = getItems();
+    ulEl.querySelectorAll('.rep-row input').forEach(inp => { items[+inp.closest('li').dataset.idx] = inp.value; });
+    const [moved] = items.splice(dndSrcIdx, 1);
+    let ins = dndSrcIdx < targetIdx ? targetIdx - 1 : targetIdx;
+    if (!before) ins++;
+    items.splice(ins, 0, moved);
+    rerender();
+  });
+
+  return {
+    onDragStart(e) {
+      const items = getItems();
+      ulEl.querySelectorAll('.rep-row input').forEach(inp => { items[+inp.closest('li').dataset.idx] = inp.value; });
+      dndSrcIdx = +e.currentTarget.dataset.idx;
+      e.currentTarget.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+    },
+    onDragEnd() {
+      clearInd();
+      ulEl.querySelectorAll('.rep-row').forEach(r => r.classList.remove('dragging'));
+      dndDropPos = null;
+    }
+  };
+}
+
+function clearDropIndicators() {
+  document.querySelectorAll('.rep-row').forEach(r => r.classList.remove('drop-above', 'drop-below'));
+}
+
+function computeDropPos(clientY) {
+  const rows = [...document.querySelectorAll('.rep-row')];
+  for (const row of rows) {
+    const idx = +row.dataset.idx;
+    if (idx === dragSrcIdx) continue;
+    const rect = row.getBoundingClientRect();
+    if (clientY < rect.bottom) {
+      return { targetIdx: idx, before: clientY < rect.top + rect.height / 2 };
+    }
+  }
+  // Below all rows — insert after the last non-source row
+  const last = rows.filter(r => +r.dataset.idx !== dragSrcIdx).pop();
+  return last ? { targetIdx: +last.dataset.idx, before: false } : null;
+}
+
+function showDropIndicator({ targetIdx, before }) {
+  const row = document.querySelector(`.rep-row[data-idx="${targetIdx}"]`);
+  if (row) row.classList.add(before ? 'drop-above' : 'drop-below');
+}
+
+function onDragStart(e) {
+  document.querySelectorAll('.rep-row input').forEach(inp => { repItems[+inp.closest('li').dataset.idx] = inp.value; });
+  dragSrcIdx = +e.currentTarget.dataset.idx;
+  e.currentTarget.classList.add('dragging');
+  e.dataTransfer.effectAllowed = 'move';
+}
+
+function onDragEnd() {
+  clearDropIndicators();
+  document.querySelectorAll('.rep-row').forEach(r => r.classList.remove('dragging'));
+  dropPos = null;
+}
+
+document.getElementById('addRepBtn').addEventListener('click', () => {
+  repItems.push('');
+  renderRepertoire();
+  document.querySelectorAll('.rep-row input').forEach((inp, i, all) => { if (i === all.length - 1) inp.focus(); });
+});
+
+document.getElementById('saveRepBtn').addEventListener('click', async () => {
+  document.querySelectorAll('.rep-row input').forEach(inp => { repItems[+inp.closest('li').dataset.idx] = inp.value; });
+  try {
+    const res = await fetch('/api/repertoire', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ items: repItems })
+    });
+    if (!res.ok) throw new Error((await res.json()).error || res.statusText);
+    showToast('toastRep', 'Gespeichert!', 'success');
+  } catch (err) { showToast('toastRep', 'Fehler: ' + err.message, 'error'); }
+});
+
+/* ===== Utils ===== */
+
+function applyLink(editorEl, savedRange, url, newTab) {
+  const sel = window.getSelection();
+  if (savedRange) { sel.removeAllRanges(); sel.addRange(savedRange); }
+  editorEl.focus();
+
+  // If cursor/selection is already inside an anchor, update it directly (no execCommand)
+  const anchorNode = savedRange
+    ? (savedRange.commonAncestorContainer.nodeType === 1
+        ? savedRange.commonAncestorContainer
+        : savedRange.commonAncestorContainer.parentElement)
+    : null;
+  const existingAnchor = anchorNode?.closest('a');
+
+  if (existingAnchor) {
+    existingAnchor.href = url;
+  } else {
+    document.execCommand('createLink', false, url);
+  }
+
+  // Find the specific anchor to update (existing or just created)
+  const afterSel = window.getSelection();
+  const afterNode = afterSel.rangeCount
+    ? (afterSel.getRangeAt(0).startContainer.nodeType === 1
+        ? afterSel.getRangeAt(0).startContainer
+        : afterSel.getRangeAt(0).startContainer.parentElement)
+    : null;
+  const anchor = existingAnchor || afterNode?.closest('a');
+
+  if (anchor) {
+    if (newTab) { anchor.target = '_blank'; anchor.rel = 'noopener noreferrer'; }
+    else { anchor.removeAttribute('target'); anchor.removeAttribute('rel'); }
+  }
+}
+
+function showLinkDialog(savedRange, editorEl, onConfirm) {
+  const modal    = document.getElementById('linkModal');
+  const urlInput = document.getElementById('linkModalUrl');
+  const newTabCb = document.getElementById('linkModalNewTab');
+  const okBtn    = document.getElementById('linkModalOk');
+  const cancelBtn = document.getElementById('linkModalCancel');
+
+  // Pre-fill if selection is already inside a link
+  let prefill = 'https://';
+  if (savedRange) {
+    const anc = savedRange.startContainer.parentElement?.closest('a');
+    if (anc) prefill = anc.href;
+  }
+  urlInput.value = prefill;
+  newTabCb.checked = true;
+  modal.style.display = 'flex';
+  requestAnimationFrame(() => { urlInput.select(); urlInput.focus(); });
+
+  function close() {
+    modal.style.display = 'none';
+    okBtn.removeEventListener('click', onOk);
+    cancelBtn.removeEventListener('click', close);
+    modal.removeEventListener('keydown', onKey);
+  }
+
+  function onOk() {
+    const url = urlInput.value.trim();
+    close();
+    if (url && url !== 'https://') onConfirm(url, newTabCb.checked);
+  }
+
+  function onKey(e) {
+    if (e.key === 'Enter')  { e.preventDefault(); onOk(); }
+    if (e.key === 'Escape') { e.preventDefault(); close(); }
+  }
+
+  okBtn.addEventListener('click', onOk);
+  cancelBtn.addEventListener('click', close);
+  modal.addEventListener('keydown', onKey);
+}
+
+function showToast(id, msg, type) {
+  const el = document.getElementById(id);
+  el.textContent = msg;
+  el.className = `toast toast--${type}`;
+  el.style.display = 'inline-block';
+  if (type === 'success') setTimeout(() => { el.style.display = 'none'; }, 7000);
+}
+
+function ea(s) { return String(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = e => resolve(e.target.result.split(',')[1]);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+/* ===== Vita ===== */
+const vitaEditor = document.getElementById('vitaEditor');
+
+document.getElementById('vitaToolbar').querySelectorAll('[data-cmd]').forEach(btn => {
+  btn.addEventListener('mousedown', e => {
+    e.preventDefault();
+    document.execCommand(btn.dataset.cmd, false, null);
+    vitaEditor.focus();
+  });
+});
+
+document.getElementById('vitaLinkBtn').addEventListener('mousedown', e => {
+  e.preventDefault();
+  const sel = window.getSelection();
+  const range = sel.rangeCount ? sel.getRangeAt(0).cloneRange() : null;
+  showLinkDialog(range, vitaEditor, (url, newTab) => {
+    applyLink(vitaEditor, range, url, newTab);
+  });
+});
+
+vitaEditor.addEventListener('focus', () => {
+  document.execCommand('defaultParagraphSeparator', false, 'p');
+});
+vitaEditor.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); document.execCommand('insertParagraph', false, null); }
+  if (e.key === 'Enter' && e.shiftKey)  { e.preventDefault(); document.execCommand('insertLineBreak', false, null); }
+});
+vitaEditor.addEventListener('paste', e => {
+  e.preventDefault();
+  document.execCommand('insertText', false, e.clipboardData.getData('text/plain'));
+});
+
+async function loadVita() {
+  try {
+    const res = await fetch('/api/vita');
+    if (!res.ok) throw new Error(`HTTP ${res.status} – Admin-Server neu starten?`);
+    const data = await res.json();
+    vitaEditor.innerHTML = data.text || '<p></p>';
+  } catch (err) { showToast('toastVita', 'Fehler: ' + err.message, 'error'); }
+}
+
+document.getElementById('saveVitaBtn').addEventListener('click', async () => {
+  try {
+    const res = await fetch('/api/vita', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text: vitaEditor.innerHTML })
+    });
+    if (!res.ok) throw new Error((await res.json()).error || res.statusText);
+    showToast('toastVita', 'Gespeichert!', 'success');
+  } catch (err) { showToast('toastVita', 'Fehler: ' + err.message, 'error'); }
+});
+
+/* ===== Trio Note à Note ===== */
+let trioData = null;
+
+async function loadTrio() {
+  try {
+    const res = await fetch('/api/trio-note-a-note');
+    if (!res.ok) throw new Error(`HTTP ${res.status} – Admin-Server neu starten?`);
+    trioData = await res.json();
+    renderTrio();
+  } catch (err) { showToast('toastTrio', 'Fehler: ' + err.message, 'error'); }
+}
+
+function renderTrio() {
+  if (!trioData) return;
+  document.getElementById('trioIntroEditor').innerHTML = trioData.intro.text || '<p></p>';
+  document.getElementById('trioBtnText').value = trioData.intro.button.text || '';
+  const _trioHref = trioData.intro.button.href || '';
+  const _trioIsMail = _trioHref.startsWith('mailto:');
+  document.getElementById('trio-btn-type-url').checked = !_trioIsMail;
+  document.getElementById('trio-btn-type-mail').checked = _trioIsMail;
+  document.getElementById('trioBtnUrlWrap').style.display = _trioIsMail ? 'none' : '';
+  document.getElementById('trioBtnMailWrap').style.display = _trioIsMail ? '' : 'none';
+  if (_trioIsMail) {
+    const _p = parseMailto(_trioHref);
+    document.getElementById('trioBtnMailTo').value = _p.to;
+    document.getElementById('trioBtnMailSubject').value = _p.subject;
+    document.getElementById('trioBtnMailBody').value = _p.body;
+  } else {
+    document.getElementById('trioBtnHref').value = _trioHref;
+  }
+  renderTrioGallery();
+  document.getElementById('trioVideoHeading').value = trioData.video.heading || '';
+  document.getElementById('trioVideoEditor').innerHTML = trioData.video.description || '<p></p>';
+  document.getElementById('trioVideoEmbed').value = trioData.video.embedUrl || '';
+  renderTrioRep();
+}
+
+function renderTrioGallery() {
+  const list = document.getElementById('trioGalleryList');
+  list.innerHTML = '';
+  (trioData.gallery || []).forEach((src, i, arr) => {
+    const row = document.createElement('div');
+    row.style.cssText = 'display:flex;align-items:center;gap:0.5rem;background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:0.3rem 0.5rem;';
+    const img = document.createElement('img');
+    img.src = '/' + src;
+    img.style.cssText = 'width:60px;height:45px;object-fit:cover;border-radius:3px;flex-shrink:0;';
+    const pathSpan = document.createElement('span');
+    pathSpan.style.cssText = 'flex:1;font-size:0.78rem;color:#777;word-break:break-all;';
+    pathSpan.textContent = src;
+    const upBtn = document.createElement('button');
+    upBtn.type = 'button'; upBtn.className = 'btn btn--secondary btn--sm'; upBtn.textContent = '▲'; upBtn.disabled = i === 0;
+    upBtn.addEventListener('click', () => { [trioData.gallery[i-1], trioData.gallery[i]] = [trioData.gallery[i], trioData.gallery[i-1]]; renderTrioGallery(); });
+    const dnBtn = document.createElement('button');
+    dnBtn.type = 'button'; dnBtn.className = 'btn btn--secondary btn--sm'; dnBtn.textContent = '▼'; dnBtn.disabled = i === arr.length - 1;
+    dnBtn.addEventListener('click', () => { [trioData.gallery[i], trioData.gallery[i+1]] = [trioData.gallery[i+1], trioData.gallery[i]]; renderTrioGallery(); });
+    const delBtn = document.createElement('button');
+    delBtn.type = 'button'; delBtn.className = 'btn btn--danger btn--sm'; delBtn.textContent = '×';
+    delBtn.addEventListener('click', () => { trioData.gallery.splice(i, 1); renderTrioGallery(); });
+    row.append(img, pathSpan, upBtn, dnBtn, delBtn);
+    list.appendChild(row);
+  });
+}
+
+function renderTrioRep() {
+  const container = document.getElementById('trioRepSections');
+  container.innerHTML = '';
+  (trioData.repertoire.sections || []).forEach(section => {
+    const secEl = document.createElement('div');
+    secEl.style.marginBottom = '1.25rem';
+    const heading = document.createElement('div');
+    heading.style.cssText = 'font-size:0.78rem;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;color:#777;margin-bottom:0.35rem;';
+    heading.textContent = section.heading;
+    secEl.appendChild(heading);
+
+    const ul = document.createElement('ul');
+    ul.style.cssText = 'list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px;';
+    function renderItems() {
+      ul.innerHTML = '';
+      section.items.forEach((item, ii) => {
+        const li = document.createElement('li');
+        li.className = 'rep-row'; li.draggable = true; li.dataset.idx = ii;
+        li.innerHTML = `<span class="rep-row__handle" aria-hidden="true">⠿</span><input type="text" value="${ea(item)}" aria-label="Eintrag ${ii + 1}"><button class="btn btn--danger btn--sm" aria-label="Löschen">×</button>`;
+        li.querySelector('input').addEventListener('input', e => { section.items[ii] = e.target.value; });
+        li.querySelector('button').addEventListener('click', () => { section.items.splice(ii, 1); renderItems(); });
+        li.addEventListener('dragstart', sectionDnd.onDragStart);
+        li.addEventListener('dragend', sectionDnd.onDragEnd);
+        ul.appendChild(li);
+      });
+    }
+    const sectionDnd = makeRepDnd(ul, () => section.items, renderItems);
+    renderItems();
+    secEl.appendChild(ul);
+    const addBtn = document.createElement('button'); addBtn.type = 'button'; addBtn.className = 'btn btn--secondary btn--sm'; addBtn.textContent = '+ Eintrag'; addBtn.style.marginTop = '0.35rem';
+    addBtn.addEventListener('click', () => { section.items.push(''); renderItems(); });
+    secEl.appendChild(addBtn);
+    container.appendChild(secEl);
+  });
+}
+
+// Gallery upload
+(function() {
+  const uploadArea = document.getElementById('trioGalleryUploadArea');
+  const fileInput  = document.getElementById('trioGalleryFileInput');
+  const statusDiv  = document.getElementById('trioGalleryUploadStatus');
+  uploadArea.addEventListener('dragover', e => { e.preventDefault(); uploadArea.classList.add('drag-over'); });
+  uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('drag-over'));
+  uploadArea.addEventListener('drop', e => {
+    e.preventDefault(); uploadArea.classList.remove('drag-over');
+    if (e.dataTransfer.files[0]) { fileInput.files = e.dataTransfer.files; fileInput.dispatchEvent(new Event('change')); }
+  });
+  fileInput.addEventListener('change', async () => {
+    const file = fileInput.files[0]; if (!file) return;
+    statusDiv.textContent = 'Wird hochgeladen…'; statusDiv.className = 'upload-status'; fileInput.disabled = true;
+    try {
+      const b64 = await fileToBase64(file);
+      const res = await fetch('/api/trio-note-a-note/upload-gallery', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ imageBase64: b64 }) });
+      const data = await res.json();
+      if (!data.ok) throw new Error(data.error);
+      if (!trioData.gallery) trioData.gallery = [];
+      trioData.gallery.push(data.imagePath);
+      renderTrioGallery();
+      statusDiv.textContent = 'Bild hinzugefügt: ' + data.imagePath;
+    } catch (err) { statusDiv.textContent = 'Fehler: ' + err.message; statusDiv.className = 'upload-status err'; }
+    finally { fileInput.disabled = false; fileInput.value = ''; }
+  });
+})();
+
+// Trio intro editor
+(function() {
+  const editor = document.getElementById('trioIntroEditor');
+  document.getElementById('trioIntroToolbar').querySelectorAll('[data-cmd]').forEach(btn => {
+    btn.addEventListener('mousedown', e => { e.preventDefault(); document.execCommand(btn.dataset.cmd, false, null); editor.focus(); });
+  });
+  document.getElementById('trioIntroLinkBtn').addEventListener('mousedown', e => {
+    e.preventDefault();
+    const sel = window.getSelection(); const range = sel.rangeCount ? sel.getRangeAt(0).cloneRange() : null;
+    showLinkDialog(range, editor, (url, newTab) => {
+      applyLink(editor, range, url, newTab);
+    });
+  });
+  editor.addEventListener('focus', () => document.execCommand('defaultParagraphSeparator', false, 'p'));
+  editor.addEventListener('keydown', e => {
+    if (e.key==='Enter' && !e.shiftKey) { e.preventDefault(); document.execCommand('insertParagraph', false, null); }
+    if (e.key==='Enter' && e.shiftKey)  { e.preventDefault(); document.execCommand('insertLineBreak', false, null); }
+  });
+  editor.addEventListener('paste', e => { e.preventDefault(); document.execCommand('insertText', false, e.clipboardData.getData('text/plain')); });
+})();
+
+// Trio video editor
+(function() {
+  const editor = document.getElementById('trioVideoEditor');
+  document.getElementById('trioVideoToolbar').querySelectorAll('[data-cmd]').forEach(btn => {
+    btn.addEventListener('mousedown', e => { e.preventDefault(); document.execCommand(btn.dataset.cmd, false, null); editor.focus(); });
+  });
+  document.getElementById('trioVideoLinkBtn').addEventListener('mousedown', e => {
+    e.preventDefault();
+    const sel = window.getSelection(); const range = sel.rangeCount ? sel.getRangeAt(0).cloneRange() : null;
+    showLinkDialog(range, editor, (url, newTab) => {
+      applyLink(editor, range, url, newTab);
+    });
+  });
+  editor.addEventListener('focus', () => document.execCommand('defaultParagraphSeparator', false, 'p'));
+  editor.addEventListener('keydown', e => {
+    if (e.key==='Enter' && !e.shiftKey) { e.preventDefault(); document.execCommand('insertParagraph', false, null); }
+    if (e.key==='Enter' && e.shiftKey)  { e.preventDefault(); document.execCommand('insertLineBreak', false, null); }
+  });
+  editor.addEventListener('paste', e => { e.preventDefault(); document.execCommand('insertText', false, e.clipboardData.getData('text/plain')); });
+})();
+
+// Trio button link type toggle
+document.querySelectorAll('input[name="trio-btn-type"]').forEach(radio => {
+  radio.addEventListener('change', () => {
+    const isMail = radio.value === 'mail';
+    document.getElementById('trioBtnUrlWrap').style.display = isMail ? 'none' : '';
+    document.getElementById('trioBtnMailWrap').style.display = isMail ? '' : 'none';
+  });
+});
+
+document.getElementById('saveTrioBtn').addEventListener('click', async () => {
+  trioData.intro.text = document.getElementById('trioIntroEditor').innerHTML;
+  trioData.intro.button.text = document.getElementById('trioBtnText').value;
+  if (document.getElementById('trio-btn-type-mail').checked) {
+    trioData.intro.button.href = buildMailto(
+      document.getElementById('trioBtnMailTo').value.trim(),
+      document.getElementById('trioBtnMailSubject').value.trim(),
+      document.getElementById('trioBtnMailBody').value.trim()
+    );
+  } else {
+    trioData.intro.button.href = document.getElementById('trioBtnHref').value;
+  }
+  trioData.video.heading = document.getElementById('trioVideoHeading').value;
+  trioData.video.description = document.getElementById('trioVideoEditor').innerHTML;
+  trioData.video.embedUrl = document.getElementById('trioVideoEmbed').value;
+  try {
+    const res = await fetch('/api/trio-note-a-note', { method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(trioData) });
+    if (!res.ok) throw new Error((await res.json()).error || res.statusText);
+    showToast('toastTrio', 'Gespeichert!', 'success');
+  } catch (err) { showToast('toastTrio', 'Fehler: ' + err.message, 'error'); }
+});
+
+/* ===== Duo Müller-Mazzoletti ===== */
+let duoData = null;
+let duoRepDnd = null;
+
+async function loadDuo() {
+  try {
+    const res = await fetch('/api/duo-muller-mazzoletti');
+    if (!res.ok) throw new Error(`HTTP ${res.status} – Admin-Server neu starten?`);
+    duoData = await res.json();
+    renderDuo();
+  } catch (err) { showToast('toastDuo', 'Fehler: ' + err.message, 'error'); }
+}
+
+function renderDuo() {
+  if (!duoData) return;
+  document.getElementById('duoIntroEditor').innerHTML = duoData.intro.text || '<p></p>';
+  document.getElementById('duoBtnText').value = duoData.intro.button.text || '';
+  const _href = duoData.intro.button.href || '';
+  const _isMail = _href.startsWith('mailto:');
+  document.getElementById('duo-btn-type-url').checked = !_isMail;
+  document.getElementById('duo-btn-type-mail').checked = _isMail;
+  document.getElementById('duoBtnUrlWrap').style.display = _isMail ? 'none' : '';
+  document.getElementById('duoBtnMailWrap').style.display = _isMail ? '' : 'none';
+  if (_isMail) {
+    const _p = parseMailto(_href);
+    document.getElementById('duoBtnMailTo').value = _p.to;
+    document.getElementById('duoBtnMailSubject').value = _p.subject;
+    document.getElementById('duoBtnMailBody').value = _p.body;
+  } else {
+    document.getElementById('duoBtnHref').value = _href;
+  }
+  renderDuoGallery();
+  document.getElementById('duoVideoHeading').value = duoData.video.heading || '';
+  document.getElementById('duoVideoEditor').innerHTML = duoData.video.description || '<p></p>';
+  document.getElementById('duoVideoEmbed').value = duoData.video.embedUrl || '';
+  renderDuoRep();
+}
+
+function renderDuoGallery() {
+  const list = document.getElementById('duoGalleryList');
+  list.innerHTML = '';
+  (duoData.gallery || []).forEach((src, i, arr) => {
+    const row = document.createElement('div');
+    row.style.cssText = 'display:flex;align-items:center;gap:0.5rem;background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:0.3rem 0.5rem;';
+    const img = document.createElement('img'); img.src = '/' + src; img.style.cssText = 'width:60px;height:45px;object-fit:cover;border-radius:3px;flex-shrink:0;';
+    const pathSpan = document.createElement('span'); pathSpan.style.cssText = 'flex:1;font-size:0.78rem;color:#777;word-break:break-all;'; pathSpan.textContent = src;
+    const upBtn = document.createElement('button'); upBtn.type = 'button'; upBtn.className = 'btn btn--secondary btn--sm'; upBtn.textContent = '▲'; upBtn.disabled = i === 0;
+    upBtn.addEventListener('click', () => { [duoData.gallery[i-1], duoData.gallery[i]] = [duoData.gallery[i], duoData.gallery[i-1]]; renderDuoGallery(); });
+    const dnBtn = document.createElement('button'); dnBtn.type = 'button'; dnBtn.className = 'btn btn--secondary btn--sm'; dnBtn.textContent = '▼'; dnBtn.disabled = i === arr.length - 1;
+    dnBtn.addEventListener('click', () => { [duoData.gallery[i], duoData.gallery[i+1]] = [duoData.gallery[i+1], duoData.gallery[i]]; renderDuoGallery(); });
+    const delBtn = document.createElement('button'); delBtn.type = 'button'; delBtn.className = 'btn btn--danger btn--sm'; delBtn.textContent = '×';
+    delBtn.addEventListener('click', () => { duoData.gallery.splice(i, 1); renderDuoGallery(); });
+    row.append(img, pathSpan, upBtn, dnBtn, delBtn);
+    list.appendChild(row);
+  });
+}
+
+function renderDuoRep() {
+  const ul = document.getElementById('duoRepList');
+  if (!duoRepDnd) duoRepDnd = makeRepDnd(ul, () => duoData.repertoire.items, renderDuoRep);
+  ul.innerHTML = '';
+  (duoData.repertoire.items || []).forEach((item, i) => {
+    const li = document.createElement('li');
+    li.className = 'rep-row'; li.draggable = true; li.dataset.idx = i;
+    li.innerHTML = `<span class="rep-row__handle" aria-hidden="true">⠿</span><input type="text" value="${ea(item)}" aria-label="Eintrag ${i + 1}"><button class="btn btn--danger btn--sm" aria-label="Löschen">×</button>`;
+    li.querySelector('input').addEventListener('input', e => { duoData.repertoire.items[i] = e.target.value; });
+    li.querySelector('button').addEventListener('click', () => { duoData.repertoire.items.splice(i, 1); renderDuoRep(); });
+    li.addEventListener('dragstart', duoRepDnd.onDragStart);
+    li.addEventListener('dragend', duoRepDnd.onDragEnd);
+    ul.appendChild(li);
+  });
+}
+
+// Duo gallery upload
+(function() {
+  const uploadArea = document.getElementById('duoGalleryUploadArea');
+  const fileInput  = document.getElementById('duoGalleryFileInput');
+  const statusDiv  = document.getElementById('duoGalleryUploadStatus');
+  uploadArea.addEventListener('dragover', e => { e.preventDefault(); uploadArea.classList.add('drag-over'); });
+  uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('drag-over'));
+  uploadArea.addEventListener('drop', e => {
+    e.preventDefault(); uploadArea.classList.remove('drag-over');
+    if (e.dataTransfer.files[0]) { fileInput.files = e.dataTransfer.files; fileInput.dispatchEvent(new Event('change')); }
+  });
+  fileInput.addEventListener('change', async () => {
+    const file = fileInput.files[0]; if (!file) return;
+    statusDiv.textContent = 'Wird hochgeladen…'; statusDiv.className = 'upload-status'; fileInput.disabled = true;
+    try {
+      const b64 = await fileToBase64(file);
+      const res = await fetch('/api/duo-muller-mazzoletti/upload-gallery', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ imageBase64: b64 }) });
+      const data = await res.json(); if (!data.ok) throw new Error(data.error);
+      if (!duoData.gallery) duoData.gallery = [];
+      duoData.gallery.push(data.imagePath); renderDuoGallery();
+      statusDiv.textContent = 'Bild hinzugefügt: ' + data.imagePath;
+    } catch (err) { statusDiv.textContent = 'Fehler: ' + err.message; statusDiv.className = 'upload-status err'; }
+    finally { fileInput.disabled = false; fileInput.value = ''; }
+  });
+})();
+
+// Duo intro editor
+(function() {
+  const editor = document.getElementById('duoIntroEditor');
+  document.getElementById('duoIntroToolbar').querySelectorAll('[data-cmd]').forEach(btn => {
+    btn.addEventListener('mousedown', e => { e.preventDefault(); document.execCommand(btn.dataset.cmd, false, null); editor.focus(); });
+  });
+  document.getElementById('duoIntroLinkBtn').addEventListener('mousedown', e => {
+    e.preventDefault();
+    const sel = window.getSelection(); const range = sel.rangeCount ? sel.getRangeAt(0).cloneRange() : null;
+    showLinkDialog(range, editor, (url, newTab) => {
+      applyLink(editor, range, url, newTab);
+    });
+  });
+  editor.addEventListener('focus', () => document.execCommand('defaultParagraphSeparator', false, 'p'));
+  editor.addEventListener('keydown', e => {
+    if (e.key==='Enter' && !e.shiftKey) { e.preventDefault(); document.execCommand('insertParagraph', false, null); }
+    if (e.key==='Enter' && e.shiftKey)  { e.preventDefault(); document.execCommand('insertLineBreak', false, null); }
+  });
+  editor.addEventListener('paste', e => { e.preventDefault(); document.execCommand('insertText', false, e.clipboardData.getData('text/plain')); });
+})();
+
+// Duo video editor
+(function() {
+  const editor = document.getElementById('duoVideoEditor');
+  document.getElementById('duoVideoToolbar').querySelectorAll('[data-cmd]').forEach(btn => {
+    btn.addEventListener('mousedown', e => { e.preventDefault(); document.execCommand(btn.dataset.cmd, false, null); editor.focus(); });
+  });
+  document.getElementById('duoVideoLinkBtn').addEventListener('mousedown', e => {
+    e.preventDefault();
+    const sel = window.getSelection(); const range = sel.rangeCount ? sel.getRangeAt(0).cloneRange() : null;
+    showLinkDialog(range, editor, (url, newTab) => {
+      applyLink(editor, range, url, newTab);
+    });
+  });
+  editor.addEventListener('focus', () => document.execCommand('defaultParagraphSeparator', false, 'p'));
+  editor.addEventListener('keydown', e => {
+    if (e.key==='Enter' && !e.shiftKey) { e.preventDefault(); document.execCommand('insertParagraph', false, null); }
+    if (e.key==='Enter' && e.shiftKey)  { e.preventDefault(); document.execCommand('insertLineBreak', false, null); }
+  });
+  editor.addEventListener('paste', e => { e.preventDefault(); document.execCommand('insertText', false, e.clipboardData.getData('text/plain')); });
+})();
+
+// Duo button link toggle
+document.querySelectorAll('input[name="duo-btn-type"]').forEach(radio => {
+  radio.addEventListener('change', () => {
+    const isMail = radio.value === 'mail';
+    document.getElementById('duoBtnUrlWrap').style.display = isMail ? 'none' : '';
+    document.getElementById('duoBtnMailWrap').style.display = isMail ? '' : 'none';
+  });
+});
+
+document.getElementById('addDuoRepBtn').addEventListener('click', () => {
+  if (!duoData.repertoire.items) duoData.repertoire.items = [];
+  duoData.repertoire.items.push(''); renderDuoRep();
+  document.querySelectorAll('#duoRepList input').forEach((inp, i, all) => { if (i === all.length - 1) inp.focus(); });
+});
+
+document.getElementById('saveDuoBtn').addEventListener('click', async () => {
+  duoData.intro.text = document.getElementById('duoIntroEditor').innerHTML;
+  duoData.intro.button.text = document.getElementById('duoBtnText').value;
+  if (document.getElementById('duo-btn-type-mail').checked) {
+    duoData.intro.button.href = buildMailto(
+      document.getElementById('duoBtnMailTo').value.trim(),
+      document.getElementById('duoBtnMailSubject').value.trim(),
+      document.getElementById('duoBtnMailBody').value.trim()
+    );
+  } else {
+    duoData.intro.button.href = document.getElementById('duoBtnHref').value;
+  }
+  duoData.video.heading = document.getElementById('duoVideoHeading').value;
+  duoData.video.description = document.getElementById('duoVideoEditor').innerHTML;
+  duoData.video.embedUrl = document.getElementById('duoVideoEmbed').value;
+  try {
+    const res = await fetch('/api/duo-muller-mazzoletti', { method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(duoData) });
+    if (!res.ok) throw new Error((await res.json()).error || res.statusText);
+    showToast('toastDuo', 'Gespeichert!', 'success');
+  } catch (err) { showToast('toastDuo', 'Fehler: ' + err.message, 'error'); }
+});
+
+/* ===== Duo DieDa ===== */
+let diedaData = null;
+let diedaRepDnd = null;
+
+async function loadDieDa() {
+  try {
+    const res = await fetch('/api/duo-dieda');
+    if (!res.ok) throw new Error(`HTTP ${res.status} – Admin-Server neu starten?`);
+    diedaData = await res.json();
+    renderDieDa();
+  } catch (err) { showToast('toastDieda', 'Fehler: ' + err.message, 'error'); }
+}
+
+function renderDieDa() {
+  if (!diedaData) return;
+  document.getElementById('diedaIntroEditor').innerHTML = diedaData.intro.text || '<p></p>';
+  document.getElementById('diedaBtnText').value = diedaData.intro.button.text || '';
+  const _href = diedaData.intro.button.href || '';
+  const _isMail = _href.startsWith('mailto:');
+  document.getElementById('dieda-btn-type-url').checked = !_isMail;
+  document.getElementById('dieda-btn-type-mail').checked = _isMail;
+  document.getElementById('diedaBtnUrlWrap').style.display = _isMail ? 'none' : '';
+  document.getElementById('diedaBtnMailWrap').style.display = _isMail ? '' : 'none';
+  if (_isMail) {
+    const _p = parseMailto(_href);
+    document.getElementById('diedaBtnMailTo').value = _p.to;
+    document.getElementById('diedaBtnMailSubject').value = _p.subject;
+    document.getElementById('diedaBtnMailBody').value = _p.body;
+  } else {
+    document.getElementById('diedaBtnHref').value = _href;
+  }
+  renderDiedaGallery();
+  document.getElementById('diedaVideoHeading').value = diedaData.video.heading || '';
+  document.getElementById('diedaVideoEditor').innerHTML = diedaData.video.description || '<p></p>';
+  document.getElementById('diedaVideoEmbed').value = diedaData.video.embedUrl || '';
+  renderDiedaRep();
+}
+
+function renderDiedaGallery() {
+  const list = document.getElementById('diedaGalleryList');
+  list.innerHTML = '';
+  (diedaData.gallery || []).forEach((src, i, arr) => {
+    const row = document.createElement('div');
+    row.style.cssText = 'display:flex;align-items:center;gap:0.5rem;background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:0.3rem 0.5rem;';
+    const img = document.createElement('img'); img.src = '/' + src; img.style.cssText = 'width:60px;height:45px;object-fit:cover;border-radius:3px;flex-shrink:0;';
+    const pathSpan = document.createElement('span'); pathSpan.style.cssText = 'flex:1;font-size:0.78rem;color:#777;word-break:break-all;'; pathSpan.textContent = src;
+    const upBtn = document.createElement('button'); upBtn.type = 'button'; upBtn.className = 'btn btn--secondary btn--sm'; upBtn.textContent = '▲'; upBtn.disabled = i === 0;
+    upBtn.addEventListener('click', () => { [diedaData.gallery[i-1], diedaData.gallery[i]] = [diedaData.gallery[i], diedaData.gallery[i-1]]; renderDiedaGallery(); });
+    const dnBtn = document.createElement('button'); dnBtn.type = 'button'; dnBtn.className = 'btn btn--secondary btn--sm'; dnBtn.textContent = '▼'; dnBtn.disabled = i === arr.length - 1;
+    dnBtn.addEventListener('click', () => { [diedaData.gallery[i], diedaData.gallery[i+1]] = [diedaData.gallery[i+1], diedaData.gallery[i]]; renderDiedaGallery(); });
+    const delBtn = document.createElement('button'); delBtn.type = 'button'; delBtn.className = 'btn btn--danger btn--sm'; delBtn.textContent = '×';
+    delBtn.addEventListener('click', () => { diedaData.gallery.splice(i, 1); renderDiedaGallery(); });
+    row.append(img, pathSpan, upBtn, dnBtn, delBtn);
+    list.appendChild(row);
+  });
+}
+
+function renderDiedaRep() {
+  const ul = document.getElementById('diedaRepList');
+  if (!diedaRepDnd) diedaRepDnd = makeRepDnd(ul, () => diedaData.repertoire.items, renderDiedaRep);
+  ul.innerHTML = '';
+  (diedaData.repertoire.items || []).forEach((item, i) => {
+    const li = document.createElement('li');
+    li.className = 'rep-row'; li.draggable = true; li.dataset.idx = i;
+    li.innerHTML = `<span class="rep-row__handle" aria-hidden="true">⠿</span><input type="text" value="${ea(item)}" aria-label="Eintrag ${i + 1}"><button class="btn btn--danger btn--sm" aria-label="Löschen">×</button>`;
+    li.querySelector('input').addEventListener('input', e => { diedaData.repertoire.items[i] = e.target.value; });
+    li.querySelector('button').addEventListener('click', () => { diedaData.repertoire.items.splice(i, 1); renderDiedaRep(); });
+    li.addEventListener('dragstart', diedaRepDnd.onDragStart);
+    li.addEventListener('dragend', diedaRepDnd.onDragEnd);
+    ul.appendChild(li);
+  });
+}
+
+// DieDa gallery upload
+(function() {
+  const uploadArea = document.getElementById('diedaGalleryUploadArea');
+  const fileInput  = document.getElementById('diedaGalleryFileInput');
+  const statusDiv  = document.getElementById('diedaGalleryUploadStatus');
+  uploadArea.addEventListener('dragover', e => { e.preventDefault(); uploadArea.classList.add('drag-over'); });
+  uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('drag-over'));
+  uploadArea.addEventListener('drop', e => {
+    e.preventDefault(); uploadArea.classList.remove('drag-over');
+    if (e.dataTransfer.files[0]) { fileInput.files = e.dataTransfer.files; fileInput.dispatchEvent(new Event('change')); }
+  });
+  fileInput.addEventListener('change', async () => {
+    const file = fileInput.files[0]; if (!file) return;
+    statusDiv.textContent = 'Wird hochgeladen…'; statusDiv.className = 'upload-status'; fileInput.disabled = true;
+    try {
+      const b64 = await fileToBase64(file);
+      const res = await fetch('/api/duo-dieda/upload-gallery', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ imageBase64: b64 }) });
+      const data = await res.json(); if (!data.ok) throw new Error(data.error);
+      if (!diedaData.gallery) diedaData.gallery = [];
+      diedaData.gallery.push(data.imagePath); renderDiedaGallery();
+      statusDiv.textContent = 'Bild hinzugefügt: ' + data.imagePath;
+    } catch (err) { statusDiv.textContent = 'Fehler: ' + err.message; statusDiv.className = 'upload-status err'; }
+    finally { fileInput.disabled = false; fileInput.value = ''; }
+  });
+})();
+
+// DieDa intro editor
+(function() {
+  const editor = document.getElementById('diedaIntroEditor');
+  document.getElementById('diedaIntroToolbar').querySelectorAll('[data-cmd]').forEach(btn => {
+    btn.addEventListener('mousedown', e => { e.preventDefault(); document.execCommand(btn.dataset.cmd, false, null); editor.focus(); });
+  });
+  document.getElementById('diedaIntroLinkBtn').addEventListener('mousedown', e => {
+    e.preventDefault();
+    const sel = window.getSelection(); const range = sel.rangeCount ? sel.getRangeAt(0).cloneRange() : null;
+    showLinkDialog(range, editor, (url, newTab) => {
+      applyLink(editor, range, url, newTab);
+    });
+  });
+  editor.addEventListener('focus', () => document.execCommand('defaultParagraphSeparator', false, 'p'));
+  editor.addEventListener('keydown', e => {
+    if (e.key==='Enter' && !e.shiftKey) { e.preventDefault(); document.execCommand('insertParagraph', false, null); }
+    if (e.key==='Enter' && e.shiftKey)  { e.preventDefault(); document.execCommand('insertLineBreak', false, null); }
+  });
+  editor.addEventListener('paste', e => { e.preventDefault(); document.execCommand('insertText', false, e.clipboardData.getData('text/plain')); });
+})();
+
+// DieDa video editor
+(function() {
+  const editor = document.getElementById('diedaVideoEditor');
+  document.getElementById('diedaVideoToolbar').querySelectorAll('[data-cmd]').forEach(btn => {
+    btn.addEventListener('mousedown', e => { e.preventDefault(); document.execCommand(btn.dataset.cmd, false, null); editor.focus(); });
+  });
+  document.getElementById('diedaVideoLinkBtn').addEventListener('mousedown', e => {
+    e.preventDefault();
+    const sel = window.getSelection(); const range = sel.rangeCount ? sel.getRangeAt(0).cloneRange() : null;
+    showLinkDialog(range, editor, (url, newTab) => {
+      applyLink(editor, range, url, newTab);
+    });
+  });
+  editor.addEventListener('focus', () => document.execCommand('defaultParagraphSeparator', false, 'p'));
+  editor.addEventListener('keydown', e => {
+    if (e.key==='Enter' && !e.shiftKey) { e.preventDefault(); document.execCommand('insertParagraph', false, null); }
+    if (e.key==='Enter' && e.shiftKey)  { e.preventDefault(); document.execCommand('insertLineBreak', false, null); }
+  });
+  editor.addEventListener('paste', e => { e.preventDefault(); document.execCommand('insertText', false, e.clipboardData.getData('text/plain')); });
+})();
+
+// DieDa button link toggle
+document.querySelectorAll('input[name="dieda-btn-type"]').forEach(radio => {
+  radio.addEventListener('change', () => {
+    const isMail = radio.value === 'mail';
+    document.getElementById('diedaBtnUrlWrap').style.display = isMail ? 'none' : '';
+    document.getElementById('diedaBtnMailWrap').style.display = isMail ? '' : 'none';
+  });
+});
+
+document.getElementById('addDiedaRepBtn').addEventListener('click', () => {
+  if (!diedaData.repertoire.items) diedaData.repertoire.items = [];
+  diedaData.repertoire.items.push(''); renderDiedaRep();
+  document.querySelectorAll('#diedaRepList input').forEach((inp, i, all) => { if (i === all.length - 1) inp.focus(); });
+});
+
+document.getElementById('saveDiedaBtn').addEventListener('click', async () => {
+  diedaData.intro.text = document.getElementById('diedaIntroEditor').innerHTML;
+  diedaData.intro.button.text = document.getElementById('diedaBtnText').value;
+  if (document.getElementById('dieda-btn-type-mail').checked) {
+    diedaData.intro.button.href = buildMailto(
+      document.getElementById('diedaBtnMailTo').value.trim(),
+      document.getElementById('diedaBtnMailSubject').value.trim(),
+      document.getElementById('diedaBtnMailBody').value.trim()
+    );
+  } else {
+    diedaData.intro.button.href = document.getElementById('diedaBtnHref').value;
+  }
+  diedaData.video.heading = document.getElementById('diedaVideoHeading').value;
+  diedaData.video.description = document.getElementById('diedaVideoEditor').innerHTML;
+  diedaData.video.embedUrl = document.getElementById('diedaVideoEmbed').value;
+  try {
+    const res = await fetch('/api/duo-dieda', { method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(diedaData) });
+    if (!res.ok) throw new Error((await res.json()).error || res.statusText);
+    showToast('toastDieda', 'Gespeichert!', 'success');
+  } catch (err) { showToast('toastDieda', 'Fehler: ' + err.message, 'error'); }
+});
+
+/* ===== KiK ===== */
+let kikData = null;
+
+async function loadKik() {
+  try {
+    const res = await fetch('/api/kik');
+    if (!res.ok) throw new Error(`HTTP ${res.status} – Admin-Server neu starten?`);
+    kikData = await res.json();
+    renderKik();
+  } catch (err) { showToast('toastKik', 'Fehler: ' + err.message, 'error'); }
+}
+
+function renderKik() {
+  if (!kikData) return;
+  document.getElementById('kikEditor').innerHTML = kikData.text || '<p></p>';
+  document.getElementById('kikLogoHref').value = kikData.logoHref || '';
+  renderKikLogoPreview();
+}
+
+function renderKikLogoPreview() {
+  const preview = document.getElementById('kikLogoPreview');
+  if (kikData.logoSrc) {
+    preview.innerHTML = '';
+    const img = document.createElement('img');
+    img.src = '/' + kikData.logoSrc + '?t=' + Date.now();
+    img.style.cssText = 'max-width:180px;max-height:180px;object-fit:contain;background:#111;padding:0.5rem;border-radius:var(--radius);display:block;';
+    img.alt = 'KiK Logo';
+    preview.appendChild(img);
+  } else {
+    preview.textContent = 'Kein Logo vorhanden.';
+  }
+}
+
+// KiK editor
+(function() {
+  const editor = document.getElementById('kikEditor');
+  document.getElementById('kikToolbar').querySelectorAll('[data-cmd]').forEach(btn => {
+    btn.addEventListener('mousedown', e => { e.preventDefault(); document.execCommand(btn.dataset.cmd, false, null); editor.focus(); });
+  });
+  document.getElementById('kikLinkBtn').addEventListener('mousedown', e => {
+    e.preventDefault();
+    const sel = window.getSelection(); const range = sel.rangeCount ? sel.getRangeAt(0).cloneRange() : null;
+    showLinkDialog(range, editor, (url, newTab) => {
+      applyLink(editor, range, url, newTab);
+    });
+  });
+  editor.addEventListener('focus', () => document.execCommand('defaultParagraphSeparator', false, 'p'));
+  editor.addEventListener('keydown', e => {
+    if (e.key==='Enter' && !e.shiftKey) { e.preventDefault(); document.execCommand('insertParagraph', false, null); }
+    if (e.key==='Enter' && e.shiftKey)  { e.preventDefault(); document.execCommand('insertLineBreak', false, null); }
+  });
+  editor.addEventListener('paste', e => { e.preventDefault(); document.execCommand('insertText', false, e.clipboardData.getData('text/plain')); });
+})();
+
+// KiK logo upload
+(function() {
+  const uploadArea = document.getElementById('kikLogoUploadArea');
+  const fileInput  = document.getElementById('kikLogoFileInput');
+  const statusDiv  = document.getElementById('kikLogoUploadStatus');
+  uploadArea.addEventListener('dragover', e => { e.preventDefault(); uploadArea.classList.add('drag-over'); });
+  uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('drag-over'));
+  uploadArea.addEventListener('drop', e => {
+    e.preventDefault(); uploadArea.classList.remove('drag-over');
+    if (e.dataTransfer.files[0]) { fileInput.files = e.dataTransfer.files; fileInput.dispatchEvent(new Event('change')); }
+  });
+  fileInput.addEventListener('change', async () => {
+    const file = fileInput.files[0]; if (!file) return;
+    statusDiv.textContent = 'Wird hochgeladen…'; statusDiv.className = 'upload-status'; fileInput.disabled = true;
+    try {
+      const b64 = await fileToBase64(file);
+      const res = await fetch('/api/kik/upload-logo', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ imageBase64: b64 }) });
+      const data = await res.json(); if (!data.ok) throw new Error(data.error);
+      kikData.logoSrc = data.logoSrc; renderKikLogoPreview();
+      statusDiv.textContent = 'Logo aktualisiert.';
+    } catch (err) { statusDiv.textContent = 'Fehler: ' + err.message; statusDiv.className = 'upload-status err'; }
+    finally { fileInput.disabled = false; fileInput.value = ''; }
+  });
+})();
+
+document.getElementById('saveKikBtn').addEventListener('click', async () => {
+  kikData.text = document.getElementById('kikEditor').innerHTML;
+  kikData.logoHref = document.getElementById('kikLogoHref').value.trim();
+  try {
+    const res = await fetch('/api/kik', { method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(kikData) });
+    if (!res.ok) throw new Error((await res.json()).error || res.statusText);
+    showToast('toastKik', 'Gespeichert!', 'success');
+  } catch (err) { showToast('toastKik', 'Fehler: ' + err.message, 'error'); }
+});
+
+/* ===== Video page ===== */
+let videoData = null;
+
+async function loadVideo() {
+  try {
+    const res = await fetch('/api/video');
+    if (!res.ok) throw new Error(`HTTP ${res.status} – Admin-Server neu starten?`);
+    videoData = await res.json();
+    renderVideo();
+  } catch (err) { showToast('toastVideo', 'Fehler: ' + err.message, 'error'); }
+}
+
+function renderVideo() {
+  if (!videoData) return;
+  document.getElementById('videoHeadingInput').value = videoData.heading || '';
+  document.getElementById('videoDescEditor').innerHTML = videoData.description || '<p></p>';
+  renderVideoList();
+}
+
+function renderVideoList() {
+  const container = document.getElementById('videoList');
+  container.innerHTML = '';
+  (videoData.videos || []).forEach((v, i, arr) => {
+    const card = document.createElement('div');
+    card.style.cssText = 'background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:0.6rem 0.75rem;display:flex;flex-direction:column;gap:0.4rem;';
+
+    const titleRow = document.createElement('div');
+    titleRow.style.cssText = 'display:flex;align-items:center;gap:0.4rem;';
+    const titleInp = document.createElement('input');
+    titleInp.type = 'text'; titleInp.placeholder = 'Titel'; titleInp.value = v.title || ''; titleInp.style.flex = '1';
+    titleInp.addEventListener('input', () => { videoData.videos[i].title = titleInp.value; });
+    const upBtn = document.createElement('button'); upBtn.type = 'button'; upBtn.className = 'btn btn--secondary btn--sm'; upBtn.textContent = '▲'; upBtn.disabled = i === 0;
+    upBtn.addEventListener('click', () => { [videoData.videos[i-1], videoData.videos[i]] = [videoData.videos[i], videoData.videos[i-1]]; renderVideoList(); });
+    const dnBtn = document.createElement('button'); dnBtn.type = 'button'; dnBtn.className = 'btn btn--secondary btn--sm'; dnBtn.textContent = '▼'; dnBtn.disabled = i === arr.length - 1;
+    dnBtn.addEventListener('click', () => { [videoData.videos[i], videoData.videos[i+1]] = [videoData.videos[i+1], videoData.videos[i]]; renderVideoList(); });
+    const delBtn = document.createElement('button'); delBtn.type = 'button'; delBtn.className = 'btn btn--danger btn--sm'; delBtn.textContent = '×';
+    delBtn.addEventListener('click', () => { videoData.videos.splice(i, 1); renderVideoList(); });
+    titleRow.append(titleInp, upBtn, dnBtn, delBtn);
+
+    const urlInp = document.createElement('input');
+    urlInp.type = 'url'; urlInp.placeholder = 'https://… (Embed-URL)';
+    urlInp.value = v.embedUrl || ''; urlInp.style.cssText = 'font-size:0.82rem;';
+    urlInp.addEventListener('input', () => { videoData.videos[i].embedUrl = urlInp.value; });
+
+    card.append(titleRow, urlInp);
+    container.appendChild(card);
+  });
+}
+
+// Video desc editor
+(function() {
+  const editor = document.getElementById('videoDescEditor');
+  document.getElementById('videoDescToolbar').querySelectorAll('[data-cmd]').forEach(btn => {
+    btn.addEventListener('mousedown', e => { e.preventDefault(); document.execCommand(btn.dataset.cmd, false, null); editor.focus(); });
+  });
+  document.getElementById('videoDescLinkBtn').addEventListener('mousedown', e => {
+    e.preventDefault();
+    const sel = window.getSelection(); const range = sel.rangeCount ? sel.getRangeAt(0).cloneRange() : null;
+    showLinkDialog(range, editor, (url, newTab) => {
+      applyLink(editor, range, url, newTab);
+    });
+  });
+  editor.addEventListener('focus', () => document.execCommand('defaultParagraphSeparator', false, 'p'));
+  editor.addEventListener('keydown', e => {
+    if (e.key==='Enter' && !e.shiftKey) { e.preventDefault(); document.execCommand('insertParagraph', false, null); }
+    if (e.key==='Enter' && e.shiftKey)  { e.preventDefault(); document.execCommand('insertLineBreak', false, null); }
+  });
+  editor.addEventListener('paste', e => { e.preventDefault(); document.execCommand('insertText', false, e.clipboardData.getData('text/plain')); });
+})();
+
+document.getElementById('addVideoBtn').addEventListener('click', () => {
+  if (!videoData.videos) videoData.videos = [];
+  videoData.videos.push({ title: '', embedUrl: '' });
+  renderVideoList();
+  document.querySelectorAll('#videoList input[type="text"]').forEach((inp, i, all) => { if (i === all.length - 1) inp.focus(); });
+});
+
+document.getElementById('saveVideoBtn').addEventListener('click', async () => {
+  videoData.heading = document.getElementById('videoHeadingInput').value;
+  videoData.description = document.getElementById('videoDescEditor').innerHTML;
+  try {
+    const res = await fetch('/api/video', { method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(videoData) });
+    if (!res.ok) throw new Error((await res.json()).error || res.statusText);
+    showToast('toastVideo', 'Gespeichert!', 'success');
+  } catch (err) { showToast('toastVideo', 'Fehler: ' + err.message, 'error'); }
+});
+
+/* ===== Kontakt ===== */
+async function loadKontakt() {
+  try {
+    const res = await fetch('/api/kontakt');
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    document.getElementById('kontaktText').value = data.text || '';
+    document.getElementById('kontaktEmail').value = data.email || '';
+    document.getElementById('kontaktLabel').value = data.label || '';
+  } catch (err) { showToast('toastKontakt', 'Fehler: ' + err.message, 'error'); }
+}
+
+document.getElementById('saveKontaktBtn').addEventListener('click', async () => {
+  const data = {
+    text: document.getElementById('kontaktText').value.trim(),
+    email: document.getElementById('kontaktEmail').value.trim(),
+    label: document.getElementById('kontaktLabel').value.trim()
+  };
+  try {
+    const res = await fetch('/api/kontakt', { method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data) });
+    if (!res.ok) throw new Error((await res.json()).error || res.statusText);
+    showToast('toastKontakt', 'Gespeichert!', 'success');
+  } catch (err) { showToast('toastKontakt', 'Fehler: ' + err.message, 'error'); }
+});
+
+/* ===== Konzertarchiv ===== */
+let archivData = null;
+
+async function loadArchiv() {
+  try {
+    const res = await fetch('/api/archiv');
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    archivData = await res.json();
+    renderArchiv();
+  } catch (err) { showToast('toastArchiv', 'Fehler: ' + err.message, 'error'); }
+}
+
+function renderArchiv() {
+  if (!archivData) return;
+  const container = document.getElementById('archivYearSections');
+  // remember which years were open before re-render
+  const openYears = new Set([...(container.querySelectorAll('.archiv-year-section.is-open') || [])].map(el => el.dataset.year));
+  container.innerHTML = '';
+  (archivData.years || []).forEach((yearObj, yi, yarr) => {
+    // first year open by default on first render; otherwise restore state
+    const isOpen = openYears.size > 0 ? openYears.has(yearObj.year) : (yi === 0);
+    const section = document.createElement('div');
+    section.className = 'archiv-year-section' + (isOpen ? ' is-open' : '');
+    section.dataset.year = yearObj.year;
+    section.style.cssText = 'margin-bottom:0.75rem;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;';
+
+    // Year header
+    const header = document.createElement('div');
+    header.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:0.75rem 1rem;background:#f0f0ec;cursor:pointer;user-select:none;';
+    // Left side: collapse chevron + year label
+    const headerLeft = document.createElement('div');
+    headerLeft.style.cssText = 'display:flex;align-items:center;gap:0.5rem;flex:1;min-width:0;';
+    const chevron = document.createElement('span');
+    chevron.style.cssText = 'font-size:0.75rem;color:#888;transition:transform 0.15s;transform:' + (isOpen ? 'rotate(90deg)' : 'rotate(0deg)') + ';';
+    chevron.textContent = '▶';
+    const yearInp = document.createElement('input');
+    yearInp.type = 'text'; yearInp.value = yearObj.year;
+    yearInp.style.cssText = 'font-weight:600;font-size:1rem;border:none;background:transparent;width:6em;padding:0;cursor:text;';
+    yearInp.addEventListener('click', e => e.stopPropagation());
+    yearInp.addEventListener('input', () => { archivData.years[yi].year = yearInp.value; section.dataset.year = yearInp.value; });
+    headerLeft.append(chevron, yearInp);
+
+    const headerBtns = document.createElement('div');
+    headerBtns.style.cssText = 'display:flex;gap:0.3rem;';
+    const yupBtn = document.createElement('button'); yupBtn.type='button'; yupBtn.className='btn btn--secondary btn--sm'; yupBtn.textContent='▲'; yupBtn.disabled = yi === 0;
+    yupBtn.addEventListener('click', e => { e.stopPropagation(); [archivData.years[yi-1], archivData.years[yi]] = [archivData.years[yi], archivData.years[yi-1]]; renderArchiv(); });
+    const ydnBtn = document.createElement('button'); ydnBtn.type='button'; ydnBtn.className='btn btn--secondary btn--sm'; ydnBtn.textContent='▼'; ydnBtn.disabled = yi === yarr.length - 1;
+    ydnBtn.addEventListener('click', e => { e.stopPropagation(); [archivData.years[yi], archivData.years[yi+1]] = [archivData.years[yi+1], archivData.years[yi]]; renderArchiv(); });
+    const ydelBtn = document.createElement('button'); ydelBtn.type='button'; ydelBtn.className='btn btn--danger btn--sm'; ydelBtn.textContent='Jahr löschen';
+    ydelBtn.addEventListener('click', e => { e.stopPropagation(); if (confirm(`Jahr ${yearObj.year} wirklich löschen?`)) { archivData.years.splice(yi, 1); renderArchiv(); } });
+    headerBtns.append(yupBtn, ydnBtn, ydelBtn);
+    header.append(headerLeft, headerBtns);
+
+    // Toggle collapse on header click
+    header.addEventListener('click', () => {
+      const nowOpen = section.classList.toggle('is-open');
+      chevron.style.transform = nowOpen ? 'rotate(90deg)' : 'rotate(0deg)';
+      concertsList.style.display = nowOpen ? '' : 'none';
+    });
+
+    section.appendChild(header);
+
+    // Concerts (shown/hidden based on collapse state)
+    const concertsList = document.createElement('div');
+    concertsList.style.cssText = 'padding:0.75rem;display:' + (isOpen ? 'flex' : 'none') + ';flex-direction:column;gap:0.75rem;border-top:1px solid var(--border);';
+
+    (yearObj.concerts || []).forEach((concert, ci, carr) => {
+      const card = document.createElement('div');
+      card.style.cssText = 'background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:0.75rem;';
+
+      // Title row
+      const titleRow = document.createElement('div');
+      titleRow.style.cssText = 'display:flex;align-items:center;gap:0.4rem;margin-bottom:0.5rem;';
+      const titleInp = document.createElement('input');
+      titleInp.type='text'; titleInp.value=concert.title||''; titleInp.placeholder='Titel'; titleInp.style.flex='1';
+      titleInp.addEventListener('input', () => { archivData.years[yi].concerts[ci].title = titleInp.value; });
+      const cupBtn = document.createElement('button'); cupBtn.type='button'; cupBtn.className='btn btn--secondary btn--sm'; cupBtn.textContent='▲'; cupBtn.disabled = ci === 0;
+      cupBtn.addEventListener('click', () => { [archivData.years[yi].concerts[ci-1], archivData.years[yi].concerts[ci]] = [archivData.years[yi].concerts[ci], archivData.years[yi].concerts[ci-1]]; renderArchiv(); });
+      const cdnBtn = document.createElement('button'); cdnBtn.type='button'; cdnBtn.className='btn btn--secondary btn--sm'; cdnBtn.textContent='▼'; cdnBtn.disabled = ci === carr.length - 1;
+      cdnBtn.addEventListener('click', () => { [archivData.years[yi].concerts[ci], archivData.years[yi].concerts[ci+1]] = [archivData.years[yi].concerts[ci+1], archivData.years[yi].concerts[ci]]; renderArchiv(); });
+      const cdelBtn = document.createElement('button'); cdelBtn.type='button'; cdelBtn.className='btn btn--danger btn--sm'; cdelBtn.textContent='×';
+      cdelBtn.addEventListener('click', () => { archivData.years[yi].concerts.splice(ci, 1); renderArchiv(); });
+      titleRow.append(titleInp, cupBtn, cdnBtn, cdelBtn);
+      card.appendChild(titleRow);
+
+      // Description
+      const descField = document.createElement('div');
+      descField.className = 'field'; descField.style.marginBottom = '0.5rem';
+      const descLbl = document.createElement('label'); descLbl.textContent = 'Beschreibung';
+      const descTA = document.createElement('textarea');
+      descTA.value = concert.description || ''; descTA.style.cssText = 'min-height:60px;resize:vertical;';
+      descTA.addEventListener('input', () => { archivData.years[yi].concerts[ci].description = descTA.value; });
+      descField.append(descLbl, descTA);
+      card.appendChild(descField);
+
+      // Image
+      const imgField = document.createElement('div');
+      imgField.className = 'field';
+      const imgLbl = document.createElement('label'); imgLbl.textContent = 'Bild';
+      imgField.appendChild(imgLbl);
+
+      if (concert.imageSrc) {
+        const imgCurrent = document.createElement('div'); imgCurrent.className = 'image-current';
+        const img = document.createElement('img'); img.src = '/' + concert.imageSrc; img.alt = '';
+        const info = document.createElement('div'); info.className = 'image-current-info';
+        const pathSpan = document.createElement('span'); pathSpan.className = 'image-current-path'; pathSpan.textContent = concert.imageSrc;
+        const clearBtn = document.createElement('button'); clearBtn.type='button'; clearBtn.className='btn btn--danger btn--sm'; clearBtn.textContent='Bild entfernen';
+        clearBtn.addEventListener('click', () => { archivData.years[yi].concerts[ci].imageSrc = ''; renderArchiv(); });
+        info.append(pathSpan, clearBtn);
+        imgCurrent.append(img, info);
+        imgField.appendChild(imgCurrent);
+      }
+
+      const uploadArea = document.createElement('div'); uploadArea.className = 'upload-area';
+      uploadArea.innerHTML = '<strong>Bild auswählen</strong> oder hierher ziehen &nbsp;·&nbsp; <span style="font-size:0.8em;color:#aaa">wird zu WebP konvertiert</span>';
+      const fileInput = document.createElement('input'); fileInput.type='file'; fileInput.accept='image/*';
+      uploadArea.appendChild(fileInput);
+      uploadArea.addEventListener('dragover', e => { e.preventDefault(); uploadArea.classList.add('drag-over'); });
+      uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('drag-over'));
+      uploadArea.addEventListener('drop', e => {
+        e.preventDefault(); uploadArea.classList.remove('drag-over');
+        if (e.dataTransfer.files[0]) { fileInput.files = e.dataTransfer.files; fileInput.dispatchEvent(new Event('change')); }
+      });
+      const statusDiv = document.createElement('div'); statusDiv.className = 'upload-status';
+
+      fileInput.addEventListener('change', async () => {
+        const file = fileInput.files[0]; if (!file) return;
+        statusDiv.textContent = 'Wird hochgeladen…'; statusDiv.className = 'upload-status'; fileInput.disabled = true;
+        // capture indices at time of listener creation
+        const _yi = yi, _ci = ci;
+        try {
+          const b64 = await fileToBase64(file);
+          const r = await fetch('/api/archiv/upload-image', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ imageBase64: b64 }) });
+          const d = await r.json(); if (!d.ok) throw new Error(d.error);
+          archivData.years[_yi].concerts[_ci].imageSrc = d.imagePath;
+          renderArchiv();
+        } catch (err) { statusDiv.textContent = 'Fehler: ' + err.message; statusDiv.className = 'upload-status err'; }
+        finally { fileInput.disabled = false; fileInput.value = ''; }
+      });
+
+      imgField.append(uploadArea, statusDiv);
+      card.appendChild(imgField);
+      concertsList.appendChild(card);
+    });
+
+    // Add concert
+    const addConcertBtn = document.createElement('button');
+    addConcertBtn.type='button'; addConcertBtn.className='btn btn--secondary btn--sm'; addConcertBtn.textContent='+ Konzert hinzufügen';
+    addConcertBtn.addEventListener('click', () => {
+      archivData.years[yi].concerts.push({ title: '', description: '', imageSrc: '' });
+      renderArchiv();
+      // scroll new card into view
+      section.querySelectorAll('input[type="text"]').forEach((inp, i, all) => { if (i === all.length - 1) { inp.scrollIntoView({ behavior:'smooth', block:'center' }); inp.focus(); } });
+    });
+    concertsList.appendChild(addConcertBtn);
+
+    section.appendChild(concertsList);
+    container.appendChild(section);
+  });
+}
+
+document.getElementById('addArchivYearBtn').addEventListener('click', () => {
+  if (!archivData) archivData = { years: [] };
+  const newYear = String(new Date().getFullYear());
+  archivData.years.unshift({ year: newYear, concerts: [] });
+  renderArchiv();
+  document.getElementById('archivYearSections').firstElementChild?.scrollIntoView({ behavior: 'smooth' });
+});
+
+document.getElementById('saveArchivBtn').addEventListener('click', async () => {
+  try {
+    const res = await fetch('/api/archiv', { method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(archivData) });
+    if (!res.ok) throw new Error((await res.json()).error || res.statusText);
+    showToast('toastArchiv', 'Gespeichert!', 'success');
+  } catch (err) { showToast('toastArchiv', 'Fehler: ' + err.message, 'error'); }
+});
+
+/* ===== Publish ===== */
+document.getElementById('publishBtn').addEventListener('click', async () => {
+  const btn = document.getElementById('publishBtn');
+  const statusEl = document.getElementById('publishStatus');
+  const msg = document.getElementById('commitMsg').value.trim();
+  if (!confirm('Website jetzt veröffentlichen?\n\nDie Änderungen sind danach öffentlich sichtbar.')) return;
+  btn.disabled = true;
+  statusEl.textContent = 'Wird veröffentlicht…';
+  try {
+    const res = await fetch('/api/git/publish', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: msg })
+    });
+    const data = await res.json();
+    if (!data.ok) throw new Error(data.error);
+    document.getElementById('commitMsg').value = '';
+    statusEl.textContent = '✓ Veröffentlicht! Die Website wird in ca. 1 Minute aktualisiert.';
+    setTimeout(() => { statusEl.textContent = ''; }, 10000);
+  } catch (err) {
+    statusEl.textContent = 'Fehler: ' + err.message;
+  } finally {
+    btn.disabled = false;
+  }
+});
+
+/* ===== Init ===== */
+loadEvents();
+loadVita();
+loadRepertoire();
+loadTrio();
+loadDuo();
+loadDieDa();
+loadArchiv();
+loadKik();
+loadVideo();
+loadKontakt();
+</script>
+
+</body>
+</html>

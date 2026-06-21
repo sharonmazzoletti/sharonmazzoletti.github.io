@@ -1,0 +1,66 @@
+{
+  "events": [
+    {
+      "id": "liminal-space-2026",
+      "title": "Liminal Space",
+      "dates": [
+        {
+          "date": "Sa, 29.08.26, 19:00",
+          "location": "Krienser Industrie Konzerte, Werkstrasse 1, 6010 Kriens"
+        }
+      ],
+      "description": "<p>Nach der erfolgreichen Erstaufführung des Programms nehme ich \"liminal space\" noch einmal auf:</p><p><br></p><p>Wie ein Möbelstück soll Musik sein, findet Erik Satie: den Raum verschönern, ohne ihn gänzlich einzunehmen.</p><p>In diesem Geist lade ich zu einem Konzert, bei dem die Gäste sich im Raum hinsetzen oder bewegen können, wie sie das wollen, Cocktails schlürfen und Snacks essen, während ich den Raum möbliere.</p><p>Mit Werken von Erik Satie, Marie Awadis, Nadia Boulanger und Philip Glass.</p><p>Tickets zu 50 | 30 CHF inkl. Finger Food und Getränke</p><p>Reservieren unter:</p>",
+      "imageUrl": "images/events/liminal-space-2026.webp",
+      "imageAlt": "Liminal Space Konzertflyer",
+      "button": {
+        "text": "Anmelden",
+        "href": "mailto:info@kikonzerte.ch?subject=Anmeldung%20KiK%2029.08.26%2C%2019%3A00",
+        "newTab": false
+      }
+    },
+    {
+      "id": "herbstkonzerte-2026",
+      "title": "Herbstkonzerte 2026",
+      "dates": [
+        {
+          "date": "Sa, 07.11.26, 19:30",
+          "location": "Kirchgemeindehaus Hasle, Bern"
+        },
+        {
+          "date": "So, 08.11.26, 11:00",
+          "location": "Hottingersaal, Zürich"
+        },
+        {
+          "date": "Sa, 14.11.26, 19:30",
+          "location": "Chalet Elim, Beinwil am See"
+        }
+      ],
+      "description": "<p>Das Trio Note à Note spannt einen Bogen vom italienischen Barock bis zu den schillernden Klängen des 20. Jahrhunderts. Das Kernstück bildet die Suite von Rebecca Clarke, deren Manuskripte erst vor wenigen Jahren wiederentdeckt wurden und welche das Trio selbst für seine Besetzung arrangiert hat.</p><p>Eintritt frei – Kollekte</p>",
+      "imageUrl": "images/events/herbstkonzerte-2026.webp",
+      "imageAlt": "Herbstkonzerte 2026",
+      "button": {
+        "text": "Anmelden",
+        "href": "mailto:trionoteanote@gmail.com?subject=Anmeldung%20Herbstkonzerte%202026",
+        "newTab": false
+      }
+    },
+    {
+      "id": "femme-tastique-2027",
+      "title": "Femme • tastique",
+      "dates": [
+        {
+          "date": "So, 29.08.27, 17:00",
+          "location": "Kirche Kleinhöchstetten"
+        }
+      ],
+      "description": "<p>Lange Zeit war die Musikgeschichte eine Geschichte der Männer. Doch abseits der bekannten Pfade existiert ein reiches Repertoire an Kammermusik, das von Frauen geschaffen wurde – voller Innovation, emotionaler Tiefe und technischer Brillanz. Im Sommer 2027 holt das Trio Note à Note Werke aus dem 20. und 21. Jahrhundert aus der Nische auf die Bühne.</p>",
+      "imageUrl": "images/events/femme-tastique-2027.webp",
+      "imageAlt": "Femme tastique 2027",
+      "button": {
+        "text": "Anmelden",
+        "href": "mailto:trionoteanote@gmail.com?subject=Anmeldung%20Femme%20tastique",
+        "newTab": false
+      }
+    }
+  ]
+}
