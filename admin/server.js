@@ -255,13 +255,17 @@ app.post('/api/git/publish', (req, res) => {
   const msg = (req.body.message || '').trim() || `Inhalt aktualisiert: ${new Date().toLocaleDateString('de-CH')}`;
   execFile('git', ['add', 'data/', 'images/'], { cwd: REPO_DIR }, addErr => {
     if (addErr) return res.json({ ok: false, error: addErr.message });
-    execFile('git', ['commit', '-m', msg], { cwd: REPO_DIR }, (commitErr, commitOut) => {
-      const nothingToCommit = (commitOut || '').includes('nothing to commit') ||
-                              (commitErr?.message || '').includes('nothing to commit');
-      if (commitErr && !nothingToCommit) return res.json({ ok: false, error: commitErr.message });
-      execFile('git', ['push'], { cwd: REPO_DIR }, (pushErr, _out, pushStderr) => {
-        if (pushErr) return res.json({ ok: false, error: (pushStderr || pushErr.message).trim() });
-        res.json({ ok: true });
+    execFile('git', ['commit', '-m', msg], { cwd: REPO_DIR }, (commitErr, commitOut, commitStderr) => {
+      const nothingToCommit = (commitOut + commitStderr).includes('nothing to commit') ||
+                              (commitOut + commitStderr).includes('nothing added to commit');
+      if (commitErr && !nothingToCommit) return res.json({ ok: false, error: (commitStderr || commitErr.message).trim() });
+      // Pull remote changes first (handles edits made directly on GitHub)
+      execFile('git', ['pull', '--rebase'], { cwd: REPO_DIR }, (pullErr, _pullOut, pullStderr) => {
+        if (pullErr) return res.json({ ok: false, error: (pullStderr || pullErr.message).trim() });
+        execFile('git', ['push'], { cwd: REPO_DIR }, (pushErr, _out, pushStderr) => {
+          if (pushErr) return res.json({ ok: false, error: (pushStderr || pushErr.message).trim() });
+          res.json({ ok: true });
+        });
       });
     });
   });
