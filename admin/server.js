@@ -260,7 +260,7 @@ app.post('/api/git/publish', (req, res) => {
                               (commitOut + commitStderr).includes('nothing added to commit');
       if (commitErr && !nothingToCommit) return res.json({ ok: false, error: (commitStderr || commitErr.message).trim() });
       // Pull remote changes first (handles edits made directly on GitHub)
-      execFile('git', ['pull', '--rebase'], { cwd: REPO_DIR }, (pullErr, _pullOut, pullStderr) => {
+      execFile('git', ['pull', '--rebase', '--autostash'], { cwd: REPO_DIR }, (pullErr, _pullOut, pullStderr) => {
         if (pullErr) return res.json({ ok: false, error: (pullStderr || pullErr.message).trim() });
         execFile('git', ['push'], { cwd: REPO_DIR }, (pushErr, _out, pushStderr) => {
           if (pushErr) return res.json({ ok: false, error: (pushStderr || pushErr.message).trim() });
