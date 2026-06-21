@@ -2,8 +2,17 @@
   "heading": "Videos",
   "description": "<p>Untenstehende Videos geben eine Kostprobe zu einigen Stücken aus meinem Solo-Repertoire. Kammermusik-Videos sind unter <a href=\"trio-note-a-note.html\">Trio Note à Note</a>, <a href=\"duo-muller-mazzoletti.html\">Duo Müller-Mazzoletti</a> und <a href=\"duo-dieda.html\">Duo DieDa</a> zu finden.</p>",
   "videos": [
-    { "title": "Robert Schumann – Geisterthema", "embedUrl": "" },
-    { "title": "J. S. Bach – Präludium und Sarabande aus Partita I", "embedUrl": "" },
-    { "title": "Lili Boulanger – D'un vieux Jardin", "embedUrl": "" }
+    {
+      "title": "Robert Schumann – Geisterthema",
+      "embedUrl": "https://player.vimeo.com/video/1203191229"
+    },
+    {
+      "title": "J. S. Bach – Präludium und Sarabande aus Partita I",
+      "embedUrl": "https://player.vimeo.com/video/1203190491"
+    },
+    {
+      "title": "Lili Boulanger – D'un vieux Jardin",
+      "embedUrl": "https://player.vimeo.com/video/1203190894"
+    }
   ]
 }
