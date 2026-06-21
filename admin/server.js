@@ -250,23 +250,36 @@ app.get('/api/git/status', (req, res) => {
   });
 });
 
-// Git publish — stage data/ + images/, commit with message, push
+// Git publish — stage data/ + images/, commit if changed, pull, push
 app.post('/api/git/publish', (req, res) => {
   const msg = (req.body.message || '').trim() || `Inhalt aktualisiert: ${new Date().toLocaleDateString('de-CH')}`;
-  execFile('git', ['add', 'data/', 'images/'], { cwd: REPO_DIR }, addErr => {
-    if (addErr) return res.json({ ok: false, error: addErr.message });
-    execFile('git', ['commit', '-m', msg], { cwd: REPO_DIR }, (commitErr, commitOut, commitStderr) => {
-      const nothingToCommit = (commitOut + commitStderr).includes('nothing to commit') ||
-                              (commitOut + commitStderr).includes('nothing added to commit');
-      if (commitErr && !nothingToCommit) return res.json({ ok: false, error: (commitStderr || commitErr.message).trim() });
-      // Pull remote changes first (handles edits made directly on GitHub)
-      execFile('git', ['pull', '--rebase', '--autostash'], { cwd: REPO_DIR }, (pullErr, _pullOut, pullStderr) => {
-        if (pullErr) return res.json({ ok: false, error: (pullStderr || pullErr.message).trim() });
-        execFile('git', ['push'], { cwd: REPO_DIR }, (pushErr, _out, pushStderr) => {
-          if (pushErr) return res.json({ ok: false, error: (pushStderr || pushErr.message).trim() });
-          res.json({ ok: true });
+  const err = (stderr, e) => (stderr || '').trim() || (e?.message || '').trim();
+
+  execFile('git', ['add', 'data/', 'images/'], { cwd: REPO_DIR }, (addErr, _o, addStderr) => {
+    if (addErr) return res.json({ ok: false, error: err(addStderr, addErr) });
+
+    // exit 1 = something staged, exit 0 = nothing staged
+    execFile('git', ['diff', '--cached', '--quiet'], { cwd: REPO_DIR }, diffErr => {
+      const hasChanges = !!diffErr;
+
+      const pullAndPush = () => {
+        execFile('git', ['pull', '--rebase', '--autostash'], { cwd: REPO_DIR }, (pullErr, _o, pullStderr) => {
+          if (pullErr) return res.json({ ok: false, error: err(pullStderr, pullErr) });
+          execFile('git', ['push'], { cwd: REPO_DIR }, (pushErr, _o, pushStderr) => {
+            if (pushErr) return res.json({ ok: false, error: err(pushStderr, pushErr) });
+            res.json({ ok: true });
+          });
         });
-      });
+      };
+
+      if (hasChanges) {
+        execFile('git', ['commit', '-m', msg], { cwd: REPO_DIR }, (commitErr, _o, commitStderr) => {
+          if (commitErr) return res.json({ ok: false, error: err(commitStderr, commitErr) });
+          pullAndPush();
+        });
+      } else {
+        pullAndPush();
+      }
     });
   });
 });
